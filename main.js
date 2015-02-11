@@ -3,10 +3,11 @@
 define(function (require) {
     "use strict";
 
-    var LINTER_NAME     = "ESLint";
-    var CodeInspection  = brackets.getModule("language/CodeInspection");
-    var FileUtils       = brackets.getModule("file/FileUtils");
-    var ESLint          = require("./eslint");
+    var LINTER_NAME    = "ESLint";
+    var CodeInspection = brackets.getModule("language/CodeInspection");
+    var FileUtils      = brackets.getModule("file/FileUtils");
+    var ESLint         = require("./eslint");
+    var YAML           = require("./js-yaml");
 
     function remapResults(results) {
         return {

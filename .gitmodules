@@ -1,3 +1,6 @@
 [submodule "eslint"]
 	path = eslint
 	url = https://github.com/eslint/eslint.git
+[submodule "js-yaml"]
+	path = js-yaml
+	url = https://github.com/nodeca/js-yaml.git
