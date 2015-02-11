@@ -1,0 +1,44 @@
+{
+  "name": "zaggino.brackets-eslint",
+  "title": "ESLint",
+  "description": "Adds ESLint support to Brackets (es6jsx branch)",
+  "version": "0.11.0-alpha.0",
+  "keywords": [
+    "lint",
+    "linting",
+    "linter",
+    "eslint",
+    "es6",
+    "jsx"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/zaggino/brackets-eslint",
+  "author": {
+    "name": "Martin Zagora",
+    "email": "zaggino@gmail.com",
+    "url": "https://github.com/zaggino"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaggino/brackets-eslint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zaggino/brackets-eslint/issues",
+    "email": "zaggino@gmail.com"
+  },
+  "engines": {
+    "brackets": ">=1.0.0"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "upgrade": "cd eslint && git fetch origin && git checkout origin/es6jsx && npm update && npm run browserify && cd .. && grunt copyeslint"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-contrib-copy": "latest",
+    "grunt-eslint": "^6.0.0",
+    "grunt-zip": "latest",
+    "load-grunt-tasks": "latest"
+  }
+}
