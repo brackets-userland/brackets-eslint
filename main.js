@@ -115,11 +115,17 @@ define(function (require) {
 
         // this requires a two level defaults merge
         var result = {};
-        Object.keys(defaultConfig).forEach(function (key) {
+
+        var keys = _.uniq(_.flatten(configs.map(function (config) {
+            return Object.keys(config);
+        })));
+
+        keys.forEach(function (key) {
             result[key] = _.defaults.apply(null, _.compact(configs.map(function (config) {
                 return config[key] || null;
             })));
         });
+
         return result;
     }
 
