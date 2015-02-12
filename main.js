@@ -11,8 +11,10 @@ define(function (require) {
     var LanguageManager = brackets.getModule("language/LanguageManager");
     var ESLint          = require("./eslint");
     var YAML            = require("./js-yaml");
+    var StateManager    = require("./StateManager");
+    var ExtensionInfo   = JSON.parse(require("text!./package.json"));
     var CONFIG_CACHE    = {};
-    var DEBUG           = true;
+    var DEBUG           = StateManager.get("DEBUG");
     var CONFIG_FILENAME = ".eslintrc";
     var jsLanguage      = LanguageManager.getLanguageForExtension("js");
 
@@ -23,7 +25,7 @@ define(function (require) {
 
     function log(str) {
         if (DEBUG) {
-            console.log(str);
+            console.log(ExtensionInfo.title + ": " + str);
         }
     }
 
@@ -37,7 +39,7 @@ define(function (require) {
         FileSystem.resolve(fullPath, function (err1, entry) {
 
             if (err1 || !entry.isFile) {
-                log("eslint: " + (err1 || "not-a-file") + " - " + fullPath);
+                log((err1 || "not-a-file") + " - " + fullPath);
                 CONFIG_CACHE[fullPath] = null;
                 return finish();
             }
@@ -45,7 +47,7 @@ define(function (require) {
             entry.read(function (err2, content) {
 
                 if (err2) {
-                    log("eslint: error reading contents - " + fullPath);
+                    log("error reading contents - " + fullPath);
                     CONFIG_CACHE[fullPath] = null;
                     return finish();
                 }
@@ -55,16 +57,16 @@ define(function (require) {
                 try {
                     config = YAML.load(content);
                 } catch (e1) {
-                    log("eslint: cannot parse yaml - " + fullPath);
+                    log("cannot parse yaml - " + fullPath);
                     try {
                         config = JSON.parse(content);
                     } catch (e2) {
-                        log("eslint: cannot parse json - " + fullPath);
+                        log("cannot parse json - " + fullPath);
                     }
                 }
 
                 if (config) {
-                    log("eslint: file parsed successfully - " + fullPath);
+                    log("file parsed successfully - " + fullPath);
                 }
 
                 CONFIG_CACHE[fullPath] = config;
@@ -155,8 +157,10 @@ define(function (require) {
     function remapResults(results) {
         return {
             errors: results.map(function (result) {
+                var message = result.message;
+                if (result.ruleId) { message += " [" + result.ruleId + "]"; }
                 return {
-                    message: result.message + " [" + result.ruleId + "]",
+                    message: message,
                     pos: {
                         line: result.line - 1,
                         ch: result.column
@@ -198,5 +202,15 @@ define(function (require) {
             loadConfigFile(entry.fullPath);
         }
     });
+
+    // some helper methods to switch debug on/off through console
+    window[ExtensionInfo.name] = {
+        debug: function (bool) {
+            bool = !!bool;
+            StateManager.set("DEBUG", bool);
+            DEBUG = bool;
+            console.log(ExtensionInfo.title + ": DEBUG set to: " + bool);
+        }
+    };
 
 });

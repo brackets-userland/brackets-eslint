@@ -1,12 +1,14 @@
+/*global module, require*/
+
 "use strict";
 
 module.exports = function (grunt) {
     require("load-grunt-tasks")(grunt); // npm install --save-dev load-grunt-tasks
 
     grunt.initConfig({
-        
+
         pkg: grunt.file.readJSON("package.json"),
-        
+
         copy: {
             eslint: {
                 files: [
@@ -31,7 +33,7 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        
+
         zip: {
             main: {
                 dest: "<%= pkg.name %>.zip",
@@ -42,14 +44,14 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        
+
         eslint: {
             options: {
                 configFile: ".eslintrc"
             },
-            target: ["main.js"]
+            target: ["Gruntfile.js", "main.js", "StateManager.js"]
         }
-        
+
     });
 
     grunt.registerTask("copyyaml", ["copy:yaml"]);
