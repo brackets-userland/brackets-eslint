@@ -2,7 +2,9 @@
 
 Brackets extension which provides file linting with ESLint.
 
-It's based on [es6jsx branch](https://github.com/eslint/eslint/tree/es6jsx) of ESLint.
+It's based on [es6jsx](https://github.com/eslint/eslint/tree/es6jsx) branch.
+
+More about this branch is written here: [http://eslint.org/blog/2014/11/es6-jsx-support/](http://eslint.org/blog/2014/11/es6-jsx-support/)
 
 ## Install
 
