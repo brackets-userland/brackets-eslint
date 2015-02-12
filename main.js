@@ -3,11 +3,19 @@
 define(function (require) {
     "use strict";
 
-    var LINTER_NAME    = "ESLint";
-    var CodeInspection = brackets.getModule("language/CodeInspection");
-    var FileUtils      = brackets.getModule("file/FileUtils");
-    var ESLint         = require("./eslint");
-    var YAML           = require("./js-yaml");
+    var LINTER_NAME     = "ESLint";
+    var CodeInspection  = brackets.getModule("language/CodeInspection");
+    var FileUtils       = brackets.getModule("file/FileUtils");
+    var LanguageManager = brackets.getModule("language/LanguageManager");
+    var ESLint          = require("./eslint");
+    var YAML            = require("./js-yaml");
+
+    var jsLanguage = LanguageManager.getLanguageForExtension("js");
+
+    // register jsx and es6 as javascript file extensions in Brackets
+    ["es6", "jsx"].forEach(function (ext) {
+        if (!LanguageManager.getLanguageForExtension(ext)) { jsLanguage.addFileExtension(ext); }
+    });
 
     function remapResults(results) {
         return {
@@ -41,7 +49,7 @@ define(function (require) {
         return deferred.promise();
     }
     
-    CodeInspection.register("javascript", {
+    CodeInspection.register(jsLanguage.getId(), {
         name: LINTER_NAME,
         scanFile: handleLintSync,
         scanFileAsync: handleLintAsync
