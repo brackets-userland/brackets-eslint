@@ -2,7 +2,7 @@
   "name": "zaggino.brackets-eslint",
   "title": "ESLint (es6jsx)",
   "description": "Adds ESLint support to Brackets (es6jsx branch)",
-  "version": "0.11.0-alpha.0",
+  "version": "0.11.0-alpha.0-1",
   "keywords": [
     "lint",
     "linting",
