@@ -1,6 +1,6 @@
 {
   "name": "zaggino.brackets-eslint",
-  "title": "ESLint",
+  "title": "ESLint (es6jsx)",
   "description": "Adds ESLint support to Brackets (es6jsx branch)",
   "version": "0.11.0-alpha.0",
   "keywords": [
@@ -39,7 +39,7 @@
   "devDependencies": {
     "grunt": "latest",
     "grunt-contrib-copy": "latest",
-    "grunt-eslint": "^6.0.0",
+    "grunt-eslint": "latest",
     "grunt-zip": "latest",
     "load-grunt-tasks": "latest"
   }
