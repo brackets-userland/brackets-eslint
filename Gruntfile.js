@@ -50,12 +50,24 @@ module.exports = function (grunt) {
                 configFile: ".eslintrc"
             },
             target: ["Gruntfile.js", "main.js", "StateManager.js"]
+        },
+
+        lineending: {
+            all: {
+                options: {
+                    eol: "lf",
+                    overwrite: true
+                },
+                files: {
+                    "": ["*.*"]
+                }
+            }
         }
 
     });
 
-    grunt.registerTask("copyyaml", ["copy:yaml"]);
-    grunt.registerTask("copyeslint", ["copy:eslint"]);
+    grunt.registerTask("copyyaml", ["copy:yaml", "lineending"]);
+    grunt.registerTask("copyeslint", ["copy:eslint", "lineending"]);
     grunt.registerTask("package", ["test", "zip"]);
     grunt.registerTask("test", ["eslint"]);
     grunt.registerTask("default", ["test"]);

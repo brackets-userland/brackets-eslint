@@ -31,7 +31,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "upgrade": "npm run upgrade-yaml && npm run upgrade-eslint",
+    "upgrade": "git submodule update --init && npm run upgrade-yaml && npm run upgrade-eslint",
     "upgrade-yaml": "cd js-yaml && git fetch origin && git checkout origin/master && cd .. && grunt copyyaml",
     "upgrade-eslint": "cd eslint && git fetch origin && git checkout origin/es6jsx && npm update && npm run browserify && cd .. && grunt copyeslint"
   },
@@ -40,6 +40,7 @@
     "grunt": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-eslint": "latest",
+    "grunt-lineending": "latest",
     "grunt-zip": "latest",
     "load-grunt-tasks": "latest"
   }
