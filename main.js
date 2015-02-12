@@ -198,7 +198,7 @@ define(function (require) {
 
     // watch for changes on config files and update the cache accordingly
     FileSystem.on("change", function (evt, entry) {
-        if (entry.isFile && entry.name === CONFIG_FILENAME) {
+        if (entry && entry.isFile && entry.name === CONFIG_FILENAME) {
             loadConfigFile(entry.fullPath);
         }
     });
