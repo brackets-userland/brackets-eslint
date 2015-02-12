@@ -3,4 +3,3 @@ env:
 rules:
     no-multi-spaces: false
     no-console: false
-    no-shadow: false
