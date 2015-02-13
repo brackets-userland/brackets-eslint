@@ -5,7 +5,7 @@
 
     var ChildProcess  = require("child_process"),
         which         = require("./which"),
-        domainName    = "zaggino.npm-loader",
+        domainName    = "zaggino.npm-loader-v1",
         domainManager = null;
 
     function fixEOL(str) {

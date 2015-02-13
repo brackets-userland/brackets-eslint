@@ -1,11 +1,12 @@
-/*global $, brackets, define*/
+/*global $, brackets, console, define*/
 
 define(function (require, exports, module) {
     "use strict";
 
+    var FileUtils       = brackets.getModule("file/FileUtils");
     var ExtensionUtils  = brackets.getModule("utils/ExtensionUtils");
-    var NodeDomain = brackets.getModule("utils/NodeDomain");
-    var nodeDomain = new NodeDomain("zaggino.npm-loader", ExtensionUtils.getModulePath(module, "domain"));
+    var NodeDomain      = brackets.getModule("utils/NodeDomain");
+    var nodeDomain      = new NodeDomain("zaggino.npm-loader-v1", ExtensionUtils.getModulePath(module, "domain"));
 
     function NpmLoader(options) {
         this.options = options || {};
@@ -13,17 +14,22 @@ define(function (require, exports, module) {
 
     NpmLoader.prototype.load = function (npmModuleName) {
         var deferred = $.Deferred();
-
+        var cwd = this.options.cwd || ExtensionUtils.getModulePath(module);
         // setup a domain and install dependencies on startup
-        nodeDomain.exec("executeAsync", this.options.cwd, "npm", ["install", npmModuleName])
+        nodeDomain.exec("executeAsync", cwd, "npm", ["install", npmModuleName])
             .then(function (stdout) {
                 try {
-                    var version = stdout.match(/^\S+/)[0].split("@")[1];
+                    var m = stdout.match(/^(\S+)\s+(\S+)/);
+                    var version = m[1].split("@")[1];
+                    var installationPath = FileUtils.convertWindowsPathToUnixPath(m[2]);
+                    console.log("NpmLoader: Installed module `" + npmModuleName + "` into: " + cwd + installationPath);
                     deferred.resolve(version);
-                } catch (e) {
+                } catch (err) {
+                    console.error("NpmLoader: " + err);
                     deferred.resolve(stdout);
                 }
             }, function (stderr) {
+                console.error("NpmLoader: Failed to install `" + npmModuleName + "`: " + stderr);
                 deferred.reject(stderr);
             });
 
