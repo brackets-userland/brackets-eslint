@@ -8,8 +8,8 @@ define(function (require, exports, module) {
     var CodeInspection  = brackets.getModule("language/CodeInspection");
     var ExtensionUtils  = brackets.getModule("utils/ExtensionUtils");
     var LanguageManager = brackets.getModule("language/LanguageManager");
-    var NodeDomain      = brackets.getModule("utils/NodeDomain");
     var StateManager    = require("./StateManager");
+    var NpmLoader       = require("./npm-loader/main");
 
     // constants
     var EXTENSION_DIR   = ExtensionUtils.getModulePath(module);
@@ -22,15 +22,14 @@ define(function (require, exports, module) {
         if (!LanguageManager.getLanguageForExtension(ext)) { JS_LANGUAGE.addFileExtension(ext); }
     });
 
-    // setup a domain and install dependencies on startup
-    var nodeDomain = new NodeDomain("brackets-eslint", ExtensionUtils.getModulePath(module, "node/domain"));
-    // TODO: use which to resolve path to npm
-    nodeDomain.exec("executeAsync", EXTENSION_DIR, "c:/Program Files/nodejs/npm", ["install", "eslint"]).then(function (stdout) {
-        console.log("domain - ok");
-        console.log(stdout);
-    }, function (stderr) {
-        console.log("domain - err");
-        console.log(stderr);
+    // install npm packages on startup using NpmLoader
+    var loader = new NpmLoader({
+        cwd: EXTENSION_DIR
+    });
+    loader.load("eslint").then(function (version) {
+        StateManager.set("eslint", version);
+    }, function (err) {
+        StateManager.set("eslint", null);
     });
 
     // this will map ESLint output to match format expected by Brackets

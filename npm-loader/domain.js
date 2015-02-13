@@ -1,8 +1,11 @@
+/*global require, exports*/
+
 (function () {
     "use strict";
 
     var ChildProcess  = require("child_process"),
-        domainName    = "brackets-eslint",
+        which         = require("./which"),
+        domainName    = "zaggino.npm-loader",
         domainManager = null;
 
     function fixEOL(str) {
@@ -13,6 +16,8 @@
     }
 
     function executeAsync(directory, command, args, callback) {
+        // use which to resolve a path executable
+        command = which.sync(command);
         // execute commands have to be escaped, spawn does this automatically and will fail if cmd is escaped
         if (command[0] !== "\"" || command[command.length - 1] !== "\"") {
             command = "\"" + command + "\"";
