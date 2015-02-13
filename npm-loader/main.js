@@ -12,11 +12,12 @@ define(function (require, exports, module) {
         this.options = options || {};
     }
 
-    NpmLoader.prototype.load = function (npmModuleName) {
+    NpmLoader.prototype.install = function (npmModuleName) {
         var deferred = $.Deferred();
         var cwd = this.options.cwd || ExtensionUtils.getModulePath(module);
+
         // setup a domain and install dependencies on startup
-        nodeDomain.exec("executeAsync", cwd, "npm", ["install", npmModuleName])
+        nodeDomain.exec("executeAsync", cwd, "npm", ["--loglevel", "warn", "install", npmModuleName])
             .then(function (stdout) {
                 try {
                     var m = stdout.match(/^(\S+)\s+(\S+)/);
@@ -25,11 +26,26 @@ define(function (require, exports, module) {
                     console.log("NpmLoader: Installed module `" + npmModuleName + "` into: " + cwd + installationPath);
                     deferred.resolve(version);
                 } catch (err) {
-                    console.error("NpmLoader: " + err);
+                    console.error("NpmLoader: Trouble parsing the install output: " + err);
                     deferred.resolve(stdout);
                 }
             }, function (stderr) {
                 console.error("NpmLoader: Failed to install `" + npmModuleName + "`: " + stderr);
+                deferred.reject(stderr);
+            });
+
+        return deferred.promise();
+    };
+
+    NpmLoader.prototype.getLatestVersion = function (npmModuleName) {
+        var deferred = $.Deferred();
+        var cwd = this.options.cwd || ExtensionUtils.getModulePath(module);
+
+        // setup a domain and install dependencies on startup
+        nodeDomain.exec("executeAsync", cwd, "npm", ["--loglevel", "warn", "view", npmModuleName, "version"])
+            .then(function (version) {
+                deferred.resolve(version.trim());
+            }, function (stderr) {
                 deferred.reject(stderr);
             });
 

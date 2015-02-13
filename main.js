@@ -22,15 +22,45 @@ define(function (require, exports, module) {
         if (!LanguageManager.getLanguageForExtension(ext)) { JS_LANGUAGE.addFileExtension(ext); }
     });
 
+    function initLinter() {
+        console.log("TODO");
+    }
+
+    function installESlint() {
+        loader.install("eslint").then(function (version) {
+            StateManager.set("currentEslintVersion", version);
+            initLinter();
+        }, function (err) {
+            StateManager.set("currentEslintVersion", null);
+        });
+    }
+
     // install npm packages on startup using NpmLoader
     var loader = new NpmLoader({
         cwd: EXTENSION_DIR
     });
-    loader.load("eslint").then(function (version) {
-        StateManager.set("eslint", version);
-    }, function (err) {
-        StateManager.set("eslint", null);
-    });
+
+    var currentExtensionVersion = PACKAGE_JSON.version;
+    var lastExtensionVersion = StateManager.get("lastExtensionVersion");
+    if (currentExtensionVersion !== lastExtensionVersion) {
+        StateManager.set("lastExtensionVersion", currentExtensionVersion);
+        console.log("ESLint needs to be reinstalled because of extension version change.");
+        installESlint();
+    } else {
+        var currentEslintVersion = StateManager.get("currentEslintVersion");
+        loader.getLatestVersion("eslint").then(function (latestEslintVersion) {
+            if (currentEslintVersion !== latestEslintVersion) {
+                console.log("ESLint needs to be updated to version " + latestEslintVersion);
+                installESlint();
+            } else {
+                console.log("ESLint is up to date (" + latestEslintVersion + ")");
+                initLinter();
+            }
+        }, function (err) {
+            console.error("ESLint failed checking for latest version: " + err);
+            initLinter();
+        });
+    }
 
     // this will map ESLint output to match format expected by Brackets
     /*
