@@ -5,7 +5,7 @@
     "language": {
         "javascript": {
             "linting.prefer": [
-                "ESLint"
+                "JSHint"
             ],
             "linting.usePreferredOnly": true
         }
