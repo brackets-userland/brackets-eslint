@@ -21,6 +21,8 @@ define(function (require, exports, module) {
     ["es6", "jsx"].forEach(function (ext) {
         if (!LanguageManager.getLanguageForExtension(ext)) { JS_LANGUAGE.addFileExtension(ext); }
     });
+    
+    // require("browserified/eslint-0.14.1");
 
     function initLinter() {
         console.log("TODO");
