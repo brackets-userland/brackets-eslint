@@ -22,6 +22,7 @@ define(function (require, exports, module) {
         if (!LanguageManager.getLanguageForExtension(ext)) { JS_LANGUAGE.addFileExtension(ext); }
     });
     
+    /*
     // require("browserified/eslint-0.14.1");
 
     function initLinter() {
@@ -63,6 +64,7 @@ define(function (require, exports, module) {
             initLinter();
         });
     }
+    */
 
     // this will map ESLint output to match format expected by Brackets
     /*

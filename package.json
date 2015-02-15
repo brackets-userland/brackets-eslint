@@ -32,7 +32,9 @@
   "scripts": {
     "test": "grunt test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "eslint": "0.14.1"
+  },
   "devDependencies": {
     "grunt": "latest",
     "grunt-contrib-copy": "latest",
