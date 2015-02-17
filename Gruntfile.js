@@ -41,7 +41,8 @@ module.exports = function (grunt) {
                 src: [
                     "LICENSE",
                     "*.js",
-                    "*.json"
+                    "*.json",
+                    "node_modules/eslint/**/*"
                 ]
             }
         },
