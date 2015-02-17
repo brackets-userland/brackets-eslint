@@ -1,4 +1,5 @@
-/*global $, brackets, console, define, setTimeout*/
+/*jshint unused:true*/
+/*global $, brackets, define*/
 
 define(function (require, exports, module) {
     "use strict";
@@ -6,68 +7,22 @@ define(function (require, exports, module) {
     // imports
     var _               = brackets.getModule("thirdparty/lodash");
     var CodeInspection  = brackets.getModule("language/CodeInspection");
-    var ExtensionUtils  = brackets.getModule("utils/ExtensionUtils");
     var LanguageManager = brackets.getModule("language/LanguageManager");
-    var StateManager    = require("./StateManager");
-    var NpmLoader       = require("./npm-loader/main");
+    var ExtensionUtils  = brackets.getModule("utils/ExtensionUtils");
+    var NodeDomain      = brackets.getModule("utils/NodeDomain");
 
     // constants
-    var EXTENSION_DIR   = ExtensionUtils.getModulePath(module);
     var JS_LANGUAGE     = LanguageManager.getLanguageForExtension("js");
     var LINTER_NAME     = "ESLint";
-    var PACKAGE_JSON    = JSON.parse(require("text!./package.json"));
+
+    var nodeDomain = new NodeDomain("zaggino.brackets-eslint", ExtensionUtils.getModulePath(module, "domain"));
 
     // register jsx and es6 as javascript file extensions in Brackets
     ["es6", "jsx"].forEach(function (ext) {
         if (!LanguageManager.getLanguageForExtension(ext)) { JS_LANGUAGE.addFileExtension(ext); }
     });
-    
-    /*
-    // require("browserified/eslint-0.14.1");
-
-    function initLinter() {
-        console.log("TODO");
-    }
-
-    function installESlint() {
-        loader.install("eslint").then(function (version) {
-            StateManager.set("currentEslintVersion", version);
-            initLinter();
-        }, function (err) {
-            StateManager.set("currentEslintVersion", null);
-        });
-    }
-
-    // install npm packages on startup using NpmLoader
-    var loader = new NpmLoader({
-        cwd: EXTENSION_DIR
-    });
-
-    var currentExtensionVersion = PACKAGE_JSON.version;
-    var lastExtensionVersion = StateManager.get("lastExtensionVersion");
-    if (currentExtensionVersion !== lastExtensionVersion) {
-        StateManager.set("lastExtensionVersion", currentExtensionVersion);
-        console.log("ESLint needs to be reinstalled because of extension version change.");
-        installESlint();
-    } else {
-        var currentEslintVersion = StateManager.get("currentEslintVersion");
-        loader.getLatestVersion("eslint").then(function (latestEslintVersion) {
-            if (currentEslintVersion !== latestEslintVersion) {
-                console.log("ESLint needs to be updated to version " + latestEslintVersion);
-                installESlint();
-            } else {
-                console.log("ESLint is up to date (" + latestEslintVersion + ")");
-                initLinter();
-            }
-        }, function (err) {
-            console.error("ESLint failed checking for latest version: " + err);
-            initLinter();
-        });
-    }
-    */
 
     // this will map ESLint output to match format expected by Brackets
-    /*
     function remapResults(results) {
         return {
             errors: results.map(function (result) {
@@ -85,22 +40,23 @@ define(function (require, exports, module) {
         };
     }
 
-    function doLint(text, fullPath, config) {
-        config = config || ESLint.defaults();
-        var filename = FileUtils.getBaseName(fullPath);
-        var results = ESLint.verify(text, config, filename);
-        return remapResults(results);
-    }
-
     function handleLintSync(text, fullPath) {
-        return doLint(text, fullPath, getConfigForPathSync(fullPath));
+        throw new Error("ESLint sync is not available, use async for " + fullPath);
     }
 
     function handleLintAsync(text, fullPath) {
-        return getConfigForPathAsync(fullPath)
-            .then(function (config) {
-                return doLint(text, fullPath, config);
+        var deferred = $.Deferred();
+
+        nodeDomain.exec("lintFile", fullPath)
+            .then(function (report) {
+                var results = _.find(report.results, { filePath: fullPath });
+                var remapped = remapResults(results.messages);
+                deferred.resolve(remapped);
+            }, function (err) {
+                deferred.reject(err);
             });
+
+        return deferred.promise();
     }
 
     // register a linter with CodeInspection
@@ -109,6 +65,5 @@ define(function (require, exports, module) {
         scanFile: handleLintSync,
         scanFileAsync: handleLintAsync
     });
-    */
 
 });

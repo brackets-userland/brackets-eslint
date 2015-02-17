@@ -1,3 +1,4 @@
+/*jshint unused:true, -W097*/
 /*global module, require*/
 
 "use strict";
