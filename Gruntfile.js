@@ -43,6 +43,7 @@ module.exports = function (grunt) {
                     "*.js",
                     "*.json",
                     "node_modules/eslint/**/*",
+                    "node_modules/esprima/**/*",
                     "node_modules/esprima-fb/**/*"
                 ]
             }
