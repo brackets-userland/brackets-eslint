@@ -42,7 +42,8 @@ module.exports = function (grunt) {
                     "LICENSE",
                     "*.js",
                     "*.json",
-                    "node_modules/eslint/**/*"
+                    "node_modules/eslint/**/*",
+                    "node_modules/esprima-fb/**/*"
                 ]
             }
         },
