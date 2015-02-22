@@ -33,7 +33,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "eslint": "0.14.x",
+    "eslint": "0.15.0",
     "esprima": "latest",
     "esprima-fb": "latest"
   },
