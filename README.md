@@ -1,4 +1,4 @@
-# ESLint
+# ESLint [![Dependency Status](https://gemnasium.com/zaggino/brackets-eslint.svg)](https://gemnasium.com/zaggino/brackets-eslint)
 
 Brackets extension which provides file linting with ESLint.
 
