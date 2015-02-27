@@ -18,7 +18,7 @@ define(function (require, exports, module) {
     var nodeDomain = new NodeDomain("zaggino.brackets-eslint", ExtensionUtils.getModulePath(module, "domain"));
 
     // register jsx and es6 as javascript file extensions in Brackets
-    ["es6", "jsx"].forEach(function (ext) {
+    ["es", "es6", "jsx"].forEach(function (ext) {
         if (!LanguageManager.getLanguageForExtension(ext)) { JS_LANGUAGE.addFileExtension(ext); }
     });
 
