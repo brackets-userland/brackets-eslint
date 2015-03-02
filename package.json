@@ -35,7 +35,7 @@
   "dependencies": {
     "eslint": "0.15.1",
     "esprima": "2.0.0",
-    "esprima-fb": "12001.1.0-dev-harmony-fb"
+    "esprima-fb": "13001.1.0-dev-harmony-fb"
   },
   "devDependencies": {
     "grunt": "latest",
