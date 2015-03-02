@@ -2,7 +2,7 @@
   "name": "zaggino.brackets-eslint",
   "title": "ESLint",
   "description": "Adds ESLint support to Brackets",
-  "version": "0.15.1",
+  "version": "0.15.2",
   "keywords": [
     "lint",
     "linting",
