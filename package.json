@@ -33,9 +33,9 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "eslint": "0.16.0",
+    "eslint": "0.16.1",
     "esprima": "1.2.5",
-    "esprima-fb": "13001.1.0-dev-harmony-fb"
+    "esprima-fb": "13001.1001.0-dev-harmony-fb"
   },
   "devDependencies": {
     "grunt": "latest",
