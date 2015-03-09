@@ -1,18 +1,17 @@
 {
-  "name": "zaggino.brackets-eslint",
-  "title": "ESLint",
-  "description": "Adds ESLint support to Brackets",
+  "name": "brackets-eslint",
   "version": "0.16.1",
+  "description": "Adds ESLint support to Brackets",
   "keywords": [
+    "brackets-extension",
+    "eslint",
     "lint",
     "linting",
-    "linter",
-    "eslint",
-    "es6",
-    "jsx"
+    "linter"
   ],
-  "license": "MIT",
   "homepage": "https://github.com/zaggino/brackets-eslint",
+  "bugs": "https://github.com/zaggino/brackets-eslint/issues",
+  "license": "MIT",
   "author": {
     "name": "Martin Zagora",
     "email": "zaggino@gmail.com",
@@ -22,15 +21,8 @@
     "type": "git",
     "url": "https://github.com/zaggino/brackets-eslint.git"
   },
-  "bugs": {
-    "url": "https://github.com/zaggino/brackets-eslint/issues",
-    "email": "zaggino@gmail.com"
-  },
-  "engines": {
-    "brackets": ">=1.0.0"
-  },
   "scripts": {
-    "test": "grunt test"
+    "test": "gulp test"
   },
   "dependencies": {
     "eslint": "0.16.1",
@@ -38,10 +30,12 @@
     "esprima-fb": "13001.1001.0-dev-harmony-fb"
   },
   "devDependencies": {
-    "grunt": "latest",
-    "grunt-eslint": "latest",
-    "grunt-lineending": "latest",
-    "grunt-zip": "latest",
-    "load-grunt-tasks": "latest"
+    "gulp": "3.8.11",
+    "gulp-eslint": "0.6.0",
+    "gulp-util": "3.0.4",
+    "through2": "0.6.3"
+  },
+  "engines": {
+    "brackets": ">=1.2.0"
   }
 }

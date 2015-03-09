@@ -9,19 +9,17 @@ Includes support for `esprima` and `esprima-fb` parsers.
 
 ## Install
 
-Use [extension registry](https://brackets-registry.aboutweb.com/)
+Use [brackets-npm-registry](https://github.com/zaggino/brackets-npm-registry) (not available yet, use manual way)
+
+or manually:
+
+```
+cd C:\Users\<username>\AppData\Roaming\Brackets\extensions\user
+git clone https://github.com/zaggino/brackets-npm-registry.git
+cd brackets-npm-registry
+npm install
+```
 
 ## Configuration
 
-use standard `.eslintrc` file like this:
-
-```
-parser:
-  "esprima-fb"
-settings:
-  ecmascript: 6
-ecmaFeatures:
-  jsx: true
-env:
-  browser: true
-```
+use standard `.eslintrc` file like [this one](.eslintrc)

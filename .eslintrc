@@ -91,7 +91,7 @@ rules:
   #Strict Mode
   global-strict: 0 #deprecated
   no-extra-strict: 0 #deprecated
-  strict: [2, "global"] #controls location of Use Strict Directives
+  strict: [2, "function"] #controls location of Use Strict Directives
   
   #Variables
   no-catch-shadow: 2 #disallow the catch clause parameter name being the same as a variable in the outer scope
@@ -151,7 +151,7 @@ rules:
   space-unary-ops: 2 #require or disallow spaces before/after unary operators (words on by default, nonwords off by default)
   spaced-line-comment: 0 #require or disallow a space immediately following the // in a line comment
   wrap-regex: 0 #require regex literals to be wrapped in parentheses
-  no-var: 2 #require let or const instead of var
+  no-var: 0 #require let or const instead of var
   generator-star: [2, "start"] #enforce the position of the * in generator functions
   
   #Legacy

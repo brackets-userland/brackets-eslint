@@ -1,69 +1,74 @@
-/*jshint unused:true*/
 /*global $, brackets, define*/
 
 define(function (require, exports, module) {
-    "use strict";
+  'use strict';
 
-    // imports
-    var _               = brackets.getModule("thirdparty/lodash");
-    var CodeInspection  = brackets.getModule("language/CodeInspection");
-    var LanguageManager = brackets.getModule("language/LanguageManager");
-    var ExtensionUtils  = brackets.getModule("utils/ExtensionUtils");
-    var NodeDomain      = brackets.getModule("utils/NodeDomain");
+  // imports
+  var _ = brackets.getModule('thirdparty/lodash');
+  var CodeInspection = brackets.getModule('language/CodeInspection');
+  var LanguageManager = brackets.getModule('language/LanguageManager');
+  var ExtensionUtils = brackets.getModule('utils/ExtensionUtils');
+  var NodeDomain = brackets.getModule('utils/NodeDomain');
 
-    // constants
-    var JS_LANGUAGE     = LanguageManager.getLanguageForExtension("js");
-    var LINTER_NAME     = "ESLint";
+  // constants
+  var JS_LANGUAGE = LanguageManager.getLanguageForExtension('js');
+  var LINTER_NAME = 'ESLint';
 
-    var nodeDomain = new NodeDomain("zaggino.brackets-eslint", ExtensionUtils.getModulePath(module, "domain"));
+  var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
 
-    // register jsx and es6 as javascript file extensions in Brackets
-    ["es", "es6", "jsx"].forEach(function (ext) {
-        if (!LanguageManager.getLanguageForExtension(ext)) { JS_LANGUAGE.addFileExtension(ext); }
-    });
+  // register jsx and es6 as javascript file extensions in Brackets
+  ['es', 'es6', 'jsx'].forEach(function (ext) {
+    if (!LanguageManager.getLanguageForExtension(ext)) {
+      JS_LANGUAGE.addFileExtension(ext);
+    }
+  });
 
-    // this will map ESLint output to match format expected by Brackets
-    function remapResults(results) {
+  // this will map ESLint output to match format expected by Brackets
+  function remapResults(results) {
+    return {
+      errors: results.map(function (result) {
+        var message = result.message;
+        if (result.ruleId) {
+          message += ' [' + result.ruleId + ']';
+        }
         return {
-            errors: results.map(function (result) {
-                var message = result.message;
-                if (result.ruleId) { message += " [" + result.ruleId + "]"; }
-                return {
-                    message: message,
-                    pos: {
-                        line: result.line - 1,
-                        ch: result.column
-                    },
-                    type: result.ruleId
-                };
-            })
+          message: message,
+          pos: {
+            line: result.line - 1,
+            ch: result.column
+          },
+          type: result.ruleId
         };
-    }
+      })
+    };
+  }
 
-    function handleLintSync(text, fullPath) {
-        throw new Error("ESLint sync is not available, use async for " + fullPath);
-    }
+  function handleLintSync(text, fullPath) {
+    throw new Error('ESLint sync is not available, use async for ' + fullPath);
+  }
 
-    function handleLintAsync(text, fullPath) {
-        var deferred = $.Deferred();
+  function handleLintAsync(text, fullPath) {
+    var deferred = new $.Deferred();
 
-        nodeDomain.exec("lintFile", fullPath)
-            .then(function (report) {
-                var results = _.find(report.results, { filePath: fullPath });
-                var remapped = remapResults(results.messages);
-                deferred.resolve(remapped);
-            }, function (err) {
-                deferred.reject(err);
-            });
+    nodeDomain.exec('lintFile', fullPath)
+      .then(function (report) {
+        var results = _.find(report.results, {
+          filePath: fullPath
+        });
+        var remapped = remapResults(results.messages);
+        deferred.resolve(remapped);
+      }, function (err) {
+        deferred.reject(err);
+      });
 
-        return deferred.promise();
-    }
+    return deferred.promise();
+  }
 
-    // register a linter with CodeInspection
-    CodeInspection.register(JS_LANGUAGE.getId(), {
-        name: LINTER_NAME,
-        scanFile: handleLintSync,
-        scanFileAsync: handleLintAsync
-    });
+  // register a linter with CodeInspection
+  CodeInspection.register(JS_LANGUAGE.getId(), {
+    name: LINTER_NAME,
+    scanFile: handleLintSync,
+    scanFileAsync: handleLintAsync
+  });
 
 });

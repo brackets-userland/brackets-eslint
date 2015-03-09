@@ -2,38 +2,46 @@
 /*global require, exports*/
 
 (function () {
-    "use strict";
+  'use strict';
 
-    var CLIEngine     = require("eslint").CLIEngine,
-        cli           = new CLIEngine(),
-        domainName    = "zaggino.brackets-eslint",
-        domainManager = null;
+  var CLIEngine = require('eslint').CLIEngine;
+  var cli = new CLIEngine();
+  var domainName = 'zaggino.brackets-eslint';
+  var domainManager = null;
 
-    function lintFile(fullPath) {
-        return cli.executeOnFiles([fullPath]);
+  function lintFile(fullPath) {
+    return cli.executeOnFiles([fullPath]);
+  }
+
+  exports.init = function (_domainManager) {
+    domainManager = _domainManager;
+
+    if (!domainManager.hasDomain(domainName)) {
+      domainManager.registerDomain(domainName, {
+        major: 0,
+        minor: 1
+      });
     }
 
-    exports.init = function (_domainManager) {
-        domainManager = _domainManager;
-
-        if (!domainManager.hasDomain(domainName)) {
-            domainManager.registerDomain(domainName, { major: 0, minor: 1 });
+    domainManager.registerCommand(
+      domainName,
+      'lintFile', // command name
+      lintFile, // handler function
+      false, // is not async
+      'lint given file with eslint', // description
+      [
+        {
+          name: 'fullPath',
+          type: 'string'
         }
+      ], [
+        {
+          name: 'report',
+          type: 'object'
+        }
+      ]
+    );
 
-        domainManager.registerCommand(
-            domainName,
-            "lintFile", // command name
-            lintFile, // handler function
-            false, // is not async
-            "lint given file with eslint", // description
-            [
-                { name: "fullPath", type: "string" }
-            ],
-            [
-                { name: "report", type: "object" }
-            ]
-        );
-
-    };
+  };
 
 }());
