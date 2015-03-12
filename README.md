@@ -15,8 +15,8 @@ or manually:
 
 ```
 cd C:\Users\<username>\AppData\Roaming\Brackets\extensions\user
-git clone https://github.com/zaggino/brackets-npm-registry.git
-cd brackets-npm-registry
+git clone https://github.com/zaggino/brackets-eslint.git
+cd brackets-eslint
 npm install
 ```
 
