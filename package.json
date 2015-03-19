@@ -1,6 +1,6 @@
 {
   "name": "brackets-eslint",
-  "version": "0.16.2",
+  "version": "0.17.1",
   "description": "Adds ESLint support to Brackets",
   "keywords": [
     "brackets-extension",
@@ -25,15 +25,15 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "eslint": "0.16.2",
+    "eslint": "0.17.1",
     "esprima": "2.1.0",
     "esprima-fb": "13001.1001.0-dev-harmony-fb"
   },
   "devDependencies": {
-    "gulp": "3.8.11",
-    "gulp-eslint": "0.6.0",
-    "gulp-util": "3.0.4",
-    "through2": "0.6.3"
+    "gulp": "3.x",
+    "gulp-eslint": "0.x",
+    "gulp-util": "3.x",
+    "through2": "0.x"
   },
   "engines": {
     "brackets": ">=1.2.0"
