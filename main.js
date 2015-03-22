@@ -7,6 +7,7 @@ define(function (require, exports, module) {
   var _ = brackets.getModule('thirdparty/lodash');
   var CodeInspection = brackets.getModule('language/CodeInspection');
   var LanguageManager = brackets.getModule('language/LanguageManager');
+  var ProjectManager = brackets.getModule('project/ProjectManager');
   var ExtensionUtils = brackets.getModule('utils/ExtensionUtils');
   var NodeDomain = brackets.getModule('utils/NodeDomain');
 
@@ -15,6 +16,7 @@ define(function (require, exports, module) {
   var LINTER_NAME = 'ESLint';
 
   var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
+  nodeDomain.exec('setProjectRoot', ProjectManager.getInitialProjectPath());
 
   // register jsx and es6 as javascript file extensions in Brackets
   ['es', 'es6', 'jsx'].forEach(function (ext) {
