@@ -6,19 +6,22 @@
 
   var CLIEngine = require('eslint').CLIEngine;
   var cli = new CLIEngine();
+  var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
 
-  function lintFile(fullPath, projectRoot) {
-    return cli.executeOnFiles([fullPath]);
+  function _setProjectRoot(projectRoot) {
+    cli = new CLIEngine({
+      rulePaths: [projectRoot + '.eslintrules']
+    });
   }
 
-  function setProjectRoot(projectRoot) {
-    cli = new CLIEngine({
-      rulePaths: [
-        projectRoot + '.eslintrules'
-      ]
-    });
+  function lintFile(fullPath, projectRoot) {
+    if (projectRoot !== currentProjectRoot) {
+      _setProjectRoot(projectRoot);
+      currentProjectRoot = projectRoot;
+    }
+    return cli.executeOnFiles([fullPath]);
   }
 
   exports.init = function (_domainManager) {
@@ -50,20 +53,6 @@
         {
           name: 'report',
           type: 'object'
-        }
-      ]
-    );
-
-    domainManager.registerCommand(
-      domainName,
-      'setProjectRoot', // command name
-      setProjectRoot, // handler function
-      false, // is not async
-      'Set the rulePaths of ESLint CLIEngine', // description
-      [
-        {
-          name: 'projectRoot',
-          type: 'string'
         }
       ]
     );

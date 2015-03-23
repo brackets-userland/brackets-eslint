@@ -16,9 +16,7 @@ define(function (require, exports, module) {
   // constants
   var JS_LANGUAGE = LanguageManager.getLanguageForExtension('js');
   var LINTER_NAME = 'ESLint';
-
   var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
-  nodeDomain.exec('setProjectRoot', ProjectManager.getInitialProjectPath());
 
   // register jsx and es6 as javascript file extensions in Brackets
   ['es', 'es6', 'jsx'].forEach(function (ext) {
