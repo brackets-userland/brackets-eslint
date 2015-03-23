@@ -4,6 +4,7 @@
 (function () {
   'use strict';
 
+  var fs = require('fs');
   var CLIEngine = require('eslint').CLIEngine;
   var cli = new CLIEngine();
   var currentProjectRoot = null;
@@ -12,9 +13,19 @@
 
   function _setProjectRoot(projectRoot) {
     var opts = {};
+    var rulesDirPath;
+
     if (projectRoot) {
-      opts.rulePaths = [projectRoot + '.eslintrules'];
+      rulesDirPath = projectRoot + '.eslintrules';
+      try {
+        if (fs.statSync(rulesDirPath).isDirectory()) {
+          opts.rulePaths = [rulesDirPath];
+        }
+      } catch (e) {
+        // no action required
+      }
     }
+
     cli = new CLIEngine(opts);
   }
 
