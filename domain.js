@@ -5,7 +5,7 @@
   'use strict';
 
   var CLIEngine = require('eslint').CLIEngine;
-  var cli;
+  var cli = new CLIEngine();
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
 
