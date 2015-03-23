@@ -14,3 +14,7 @@ Use [brackets-npm-registry](https://github.com/zaggino/brackets-npm-registry)
 ## How to configure
 
 Use standard `.eslintrc` file like [this one](.eslintrc)
+
+## How to use custom rules
+
+Move them to `.eslintrules` folder in your project root like you can see in this repo.
