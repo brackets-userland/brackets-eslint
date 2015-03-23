@@ -11,9 +11,11 @@
   var domainManager = null;
 
   function _setProjectRoot(projectRoot) {
-    cli = new CLIEngine({
-      rulePaths: [projectRoot + '.eslintrules']
-    });
+    var opts = {};
+    if (projectRoot) {
+      opts.rulePaths = [projectRoot + '.eslintrules'];
+    }
+    cli = new CLIEngine(opts);
   }
 
   function lintFile(fullPath, projectRoot) {
