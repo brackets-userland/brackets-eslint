@@ -53,8 +53,9 @@ define(function (require, exports, module) {
 
   function handleLintAsync(text, fullPath) {
     var deferred = new $.Deferred();
+    var projectRoot = ProjectManager.getProjectRoot().fullPath;
 
-    nodeDomain.exec('lintFile', fullPath)
+    nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report) {
         var results = _.find(report.results, {
           filePath: fullPath

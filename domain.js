@@ -9,7 +9,7 @@
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
 
-  function lintFile(fullPath) {
+  function lintFile(fullPath, projectRoot) {
     return cli.executeOnFiles([fullPath]);
   }
 
@@ -40,6 +40,10 @@
       [
         {
           name: 'fullPath',
+          type: 'string'
+        },
+        {
+          name: 'projectRoot',
           type: 'string'
         }
       ], [
