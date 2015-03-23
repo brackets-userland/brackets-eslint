@@ -3,8 +3,6 @@
 define(function (require, exports, module) {
   'use strict';
 
-  if (false) { window.alert(); }
-
   // imports
   var _ = brackets.getModule('thirdparty/lodash');
   var CodeInspection = brackets.getModule('language/CodeInspection');
