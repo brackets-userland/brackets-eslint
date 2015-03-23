@@ -4,12 +4,36 @@
 (function () {
   'use strict';
 
+  var fs = require('fs');
   var CLIEngine = require('eslint').CLIEngine;
   var cli = new CLIEngine();
+  var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
 
-  function lintFile(fullPath) {
+  function _setProjectRoot(projectRoot) {
+    var opts = {};
+    var rulesDirPath;
+
+    if (projectRoot) {
+      rulesDirPath = projectRoot + '.eslintrules';
+      try {
+        if (fs.statSync(rulesDirPath).isDirectory()) {
+          opts.rulePaths = [rulesDirPath];
+        }
+      } catch (e) {
+        // no action required
+      }
+    }
+
+    cli = new CLIEngine(opts);
+  }
+
+  function lintFile(fullPath, projectRoot) {
+    if (projectRoot !== currentProjectRoot) {
+      _setProjectRoot(projectRoot);
+      currentProjectRoot = projectRoot;
+    }
     return cli.executeOnFiles([fullPath]);
   }
 
@@ -32,6 +56,10 @@
       [
         {
           name: 'fullPath',
+          type: 'string'
+        },
+        {
+          name: 'projectRoot',
           type: 'string'
         }
       ], [
