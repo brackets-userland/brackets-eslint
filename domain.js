@@ -10,6 +10,7 @@
   var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
+  var noop = function () {};
 
   function _setProjectRoot(projectRoot) {
     var opts = {};
@@ -23,6 +24,7 @@
         }
       } catch (e) {
         // no action required
+        noop(e);
       }
     }
 
