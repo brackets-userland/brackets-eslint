@@ -21,6 +21,7 @@ Move them to `.eslintrules` folder in your project root like you can see in this
 
 ## Supported parsers
 
+- [babel-eslint](https://www.npmjs.com/package/babel-eslint)
 - [esprima](https://www.npmjs.com/package/esprima)
 - [esprima-fb](https://www.npmjs.com/package/esprima-fb)
 

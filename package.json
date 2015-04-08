@@ -25,6 +25,7 @@
     "test": "gulp test"
   },
   "dependencies": {
+    "babel-eslint": "^2.0.2",
     "eslint": "^0.18.0",
     "eslint-plugin-react": "^2.1.0",
     "esprima": "^2.1.0",
