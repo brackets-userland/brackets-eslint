@@ -5,7 +5,7 @@ Brackets extension which provides file linting with ESLint.
 Uses CLIEngine from [https://www.npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)
 which should provide same results as linting in the command line (respecting all .eslintrc files)
 
-Includes support for `esprima` and `esprima-fb` parsers.
+Includes support for [custom parsers](#supported-parsers) and [plugins](#supported-plugins).
 
 ## How to install
 
