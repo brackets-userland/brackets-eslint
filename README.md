@@ -18,3 +18,12 @@ Use standard `.eslintrc` file like [this one](.eslintrc)
 ## How to use custom rules
 
 Move them to `.eslintrules` folder in your project root like you can see in this repo.
+
+## Supported parsers
+
+- [esprima](https://www.npmjs.com/package/esprima)
+- [esprima-fb](https://www.npmjs.com/package/esprima-fb)
+
+## Supported plugins
+
+- [react](https://www.npmjs.com/package/eslint-plugin-react)
