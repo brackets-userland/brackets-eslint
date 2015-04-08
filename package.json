@@ -1,6 +1,6 @@
 {
   "name": "brackets-eslint",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "description": "Adds ESLint support to Brackets",
   "keywords": [
     "brackets-extension",
