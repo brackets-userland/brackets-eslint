@@ -26,8 +26,9 @@
   },
   "dependencies": {
     "eslint": "^0.18.0",
+    "eslint-plugin-react": "^2.1.0",
     "esprima": "^2.1.0",
-    "esprima-fb": "^13001.1001.0-dev-harmony-fb"
+    "esprima-fb": "^14001.1.0-dev-harmony-fb"
   },
   "devDependencies": {
     "gulp": "3.x",
