@@ -27,4 +27,5 @@ Move them to `.eslintrules` folder in your project root like you can see in this
 
 ## Supported plugins
 
+- [angular](https://www.npmjs.com/package/eslint-plugin-angular)
 - [react](https://www.npmjs.com/package/eslint-plugin-react)
