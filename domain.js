@@ -1,8 +1,17 @@
-/*jshint unused:true*/
+/*eslint no-process-env:0*/
 /*global require, exports*/
 
 (function () {
   'use strict';
+
+  if (process.platform === 'win32') {
+    process.env.NODE_PATH = process.env.APPDATA + '\\npm\\node_modules';
+  } else if (process.platform === 'darwin') {
+    // TODO: mac
+  } else {
+    // TODO: linux
+  }
+  require('module').Module._initPaths();
 
   var fs = require('fs');
   var CLIEngine = require('eslint').CLIEngine;
