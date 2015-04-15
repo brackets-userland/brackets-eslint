@@ -4,13 +4,19 @@
 (function () {
   'use strict';
 
+  var oldNodePath = '';
+  if (process.env.NODE_PATH) {
+    oldNodePath = process.env.NODE_PATH + (process.platform === 'win32' ? ';' : ':');
+  }
+
   if (process.platform === 'win32') {
-    process.env.NODE_PATH = process.env.APPDATA + '\\npm\\node_modules';
+    process.env.NODE_PATH = oldNodePath + process.env.APPDATA + '\\npm\\node_modules';
   } else if (process.platform === 'darwin') {
     // TODO: mac
   } else {
-    // TODO: linux
+    process.env.NODE_PATH = oldNodePath + '/usr/lib/node_modules';
   }
+
   require('module').Module._initPaths();
 
   var fs = require('fs');
