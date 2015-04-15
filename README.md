@@ -29,3 +29,13 @@ Move them to `.eslintrules` folder in your project root like you can see in this
 
 - [angular](https://www.npmjs.com/package/eslint-plugin-angular)
 - [react](https://www.npmjs.com/package/eslint-plugin-react)
+
+## Additional parsers and plugins
+
+Extension is able to re-use globally installed npm modules, but you have to have them installed in the default paths (below) or add a path to this modules into `NODE_PATH` environment variable on your system.
+
+```
+win: %APPDATA%\npm\node_modules
+mac: /usr/local/lib/node_modules
+linux: /usr/lib/node_modules
+```
