@@ -12,7 +12,7 @@
   if (process.platform === 'win32') {
     process.env.NODE_PATH = oldNodePath + process.env.APPDATA + '\\npm\\node_modules';
   } else if (process.platform === 'darwin') {
-    // TODO: mac
+    process.env.NODE_PATH = oldNodePath + '/usr/local/lib/node_modules';
   } else {
     process.env.NODE_PATH = oldNodePath + '/usr/lib/node_modules';
   }
