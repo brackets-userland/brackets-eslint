@@ -4,21 +4,6 @@
 (function () {
   'use strict';
 
-  var oldNodePath = '';
-  if (process.env.NODE_PATH) {
-    oldNodePath = process.env.NODE_PATH + (process.platform === 'win32' ? ';' : ':');
-  }
-
-  if (process.platform === 'win32') {
-    process.env.NODE_PATH = oldNodePath + process.env.APPDATA + '\\npm\\node_modules';
-  } else if (process.platform === 'darwin') {
-    process.env.NODE_PATH = oldNodePath + '/usr/local/lib/node_modules';
-  } else {
-    process.env.NODE_PATH = oldNodePath + '/usr/lib/node_modules';
-  }
-
-  require('module').Module._initPaths();
-
   var fs = require('fs');
   var CLIEngine = require('eslint').CLIEngine;
   var cli = new CLIEngine();
@@ -45,6 +30,11 @@
 
     cli = new CLIEngine(opts);
   }
+
+  require('enable-global-packages').on('ready', function () {
+    // global packages are available now
+    _setProjectRoot(currentProjectRoot);
+  });
 
   function lintFile(fullPath, projectRoot) {
     if (projectRoot !== currentProjectRoot) {

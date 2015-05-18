@@ -25,12 +25,8 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "babel-eslint": "^3.1.1",
-    "eslint": "^0.21.0",
-    "eslint-plugin-angular": "^0.0.7",
-    "eslint-plugin-react": "^2.2.0",
-    "esprima": "^2.2.0",
-    "esprima-fb": "^15001.1.0-dev-harmony-fb"
+    "enable-global-packages": "latest",
+    "eslint": "latest"
   },
   "devDependencies": {
     "gulp": "3.x",
