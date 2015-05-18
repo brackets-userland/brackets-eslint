@@ -19,23 +19,10 @@ Use standard `.eslintrc` file like [this one](.eslintrc)
 
 Move them to `.eslintrules` folder in your project root like you can see in this repo.
 
-## Supported parsers
+## Custom parsers and plugins
 
-- [babel-eslint](https://www.npmjs.com/package/babel-eslint)
-- [esprima](https://www.npmjs.com/package/esprima)
-- [esprima-fb](https://www.npmjs.com/package/esprima-fb)
-
-## Supported plugins
-
-- [angular](https://www.npmjs.com/package/eslint-plugin-angular)
-- [react](https://www.npmjs.com/package/eslint-plugin-react)
-
-## Additional parsers and plugins
-
-Extension is able to re-use globally installed npm modules, but you have to have them installed in the default paths (below) or add a path to this modules into `NODE_PATH` environment variable on your system.
+Extension is able to re-use globally installed npm modules, only thing you have to do is install them:
 
 ```
-win: %APPDATA%\npm\node_modules
-mac: /usr/local/lib/node_modules
-linux: /usr/lib/node_modules
+npm install --global eslint-plugin-react
 ```
