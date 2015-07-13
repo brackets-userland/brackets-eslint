@@ -15,12 +15,24 @@
   function _setProjectRoot(projectRoot) {
     var opts = {};
     var rulesDirPath;
+    var ignorePath;
 
     if (projectRoot) {
       rulesDirPath = projectRoot + '.eslintrules';
       try {
         if (fs.statSync(rulesDirPath).isDirectory()) {
           opts.rulePaths = [rulesDirPath];
+        }
+      } catch (e) {
+        // no action required
+        noop(e);
+      }
+
+      ignorePath = projectRoot + '.eslintignore';
+      try {
+        if (fs.statSync(ignorePath).isFile()) {
+          opts.ignore = true;
+          opts.ignorePath = ignorePath;
         }
       } catch (e) {
         // no action required
@@ -36,12 +48,24 @@
     _setProjectRoot(currentProjectRoot);
   });
 
-  function lintFile(fullPath, projectRoot) {
+  function lintFile(fullPath, projectRoot, callback) {
     if (projectRoot !== currentProjectRoot) {
       _setProjectRoot(projectRoot);
       currentProjectRoot = projectRoot;
     }
-    return cli.executeOnFiles([fullPath]);
+    fs.readFile(fullPath, {encoding: 'utf8'}, function (err, text) {
+      if (err) {
+        return callback(err);
+      }
+      var relativePath = fullPath.indexOf(projectRoot) === 0 ? fullPath.substring(projectRoot.length) : fullPath;
+
+      // this is important for ESLint so .eslintrc is properly loaded
+      // we could go around this by parsing .eslintrc manually but that'd
+      // bring complexity we don't need here right now
+      process.chdir(projectRoot);
+
+      callback(null, cli.executeOnText(text, relativePath));
+    });
   }
 
   exports.init = function (_domainManager) {
@@ -58,7 +82,7 @@
       domainName,
       'lintFile', // command name
       lintFile, // handler function
-      false, // is not async
+      true, // is async
       'lint given file with eslint', // description
       [
         {

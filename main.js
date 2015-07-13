@@ -4,7 +4,6 @@ define(function (require, exports, module) {
   'use strict';
 
   // imports
-  var _ = brackets.getModule('thirdparty/lodash');
   var CodeInspection = brackets.getModule('language/CodeInspection');
   var LanguageManager = brackets.getModule('language/LanguageManager');
   var ProjectManager = brackets.getModule('project/ProjectManager');
@@ -53,9 +52,10 @@ define(function (require, exports, module) {
 
     nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report) {
-        var results = _.find(report.results, {
-          filePath: fullPath
-        });
+        if (report.results.length > 1) {
+          console.warn('ESLint returned multiple results, where only one set was expected');
+        }
+        var results = report.results[0];
         var remapped = remapResults(results.messages);
         deferred.resolve(remapped);
       }, function (err) {
