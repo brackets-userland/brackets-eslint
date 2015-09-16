@@ -27,7 +27,8 @@
   "dependencies": {
     "babel-eslint": "latest",
     "enable-global-packages": "latest",
-    "eslint": "latest"
+    "eslint": "latest",
+    "eslint-plugin-react": "latest"
   },
   "devDependencies": {
     "gulp": "3.x",
