@@ -48,6 +48,30 @@
     _setProjectRoot(currentProjectRoot);
   });
 
+  // --- catch some of uncaughtExceptions so Brackets won't crash
+  var uncaughtExceptionHandlers = process._events.uncaughtException;
+  if (!Array.isArray(uncaughtExceptionHandlers)) { uncaughtExceptionHandlers = [ uncaughtExceptionHandlers ]; }
+  process.removeAllListeners('uncaughtException');
+  process.on('uncaughtException', function (err) {
+    var stack = err.stack;
+    var tests = [
+      /Cannot find module '([^']+)'/,
+      /extensions(\\|\/)user(\\|\/)brackets-eslint(\\|\/)domain\.js:/
+    ];
+    var results = tests.map(function (test) {
+      return !!stack.match(test);
+    });
+    var rethrow = results.indexOf(false) !== -1;
+    if (rethrow) {
+      uncaughtExceptionHandlers.forEach(function (handler) {
+        handler(err);
+      });
+    } else {
+      console.error('uncaughtException caught by brackets-eslint: ' + stack);
+    }
+  });
+  // ---
+
   function lintFile(fullPath, projectRoot, callback) {
     if (projectRoot !== currentProjectRoot) {
       _setProjectRoot(projectRoot);
