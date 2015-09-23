@@ -88,7 +88,13 @@
       // bring complexity we don't need here right now
       process.chdir(projectRoot);
 
-      callback(null, cli.executeOnText(text, relativePath));
+      var res;
+      try {
+        res = cli.executeOnText(text, relativePath);
+      } catch (e) {
+        err = e.toString();
+      }
+      callback(err, res);
     });
   }
 
