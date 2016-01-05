@@ -12,11 +12,12 @@ define(function (require, exports, module) {
 
   // constants
   var JS_LANGUAGE = LanguageManager.getLanguageForExtension('js');
+  var JSX_LANGUAGE = LanguageManager.getLanguageForExtension('jsx');
   var LINTER_NAME = 'ESLint';
   var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
 
-  // register jsx and es6 as javascript file extensions in Brackets
-  ['es', 'es6', 'jsx'].forEach(function (ext) {
+  // register es and es6 as javascript file extensions in Brackets
+  ['es', 'es6'].forEach(function (ext) {
     if (!LanguageManager.getLanguageForExtension(ext)) {
       JS_LANGUAGE.addFileExtension(ext);
     }
@@ -72,4 +73,9 @@ define(function (require, exports, module) {
     scanFileAsync: handleLintAsync
   });
 
+  CodeInspection.register(JSX_LANGUAGE.getId(), {
+    name: LINTER_NAME,
+    scanFile: handleLintSync,
+    scanFileAsync: handleLintAsync
+  });
 });
