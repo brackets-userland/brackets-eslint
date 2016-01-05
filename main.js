@@ -16,13 +16,6 @@ define(function (require, exports, module) {
   var LINTER_NAME = 'ESLint';
   var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
 
-  // register es and es6 as javascript file extensions in Brackets
-  ['es', 'es6'].forEach(function (ext) {
-    if (!LanguageManager.getLanguageForExtension(ext)) {
-      JS_LANGUAGE.addFileExtension(ext);
-    }
-  });
-
   // this will map ESLint output to match format expected by Brackets
   function remapResults(results) {
     return {
@@ -67,15 +60,12 @@ define(function (require, exports, module) {
   }
 
   // register a linter with CodeInspection
-  CodeInspection.register(JS_LANGUAGE.getId(), {
-    name: LINTER_NAME,
-    scanFile: handleLintSync,
-    scanFileAsync: handleLintAsync
+  [JS_LANGUAGE.getId(), JSX_LANGUAGE.getId()].forEach(function (langId) {
+    CodeInspection.register(langId, {
+      name: LINTER_NAME,
+      scanFile: handleLintSync,
+      scanFileAsync: handleLintAsync
+    });
   });
 
-  CodeInspection.register(JSX_LANGUAGE.getId(), {
-    name: LINTER_NAME,
-    scanFile: handleLintSync,
-    scanFileAsync: handleLintAsync
-  });
 });
