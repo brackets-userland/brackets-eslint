@@ -8,19 +8,36 @@
     eslintPath = eslintPath || 'eslint';
 
     // log version to console to check if we're using the correct eslint
-    var pkgVersion = require(eslintPath + '/package.json').version;
-    console.log('using ESLint version', pkgVersion, 'from:', eslintPath);
+    // var pkgVersion = require(eslintPath + '/package.json').version;
+    // console.log('using ESLint version', pkgVersion, 'from:', eslintPath);
 
     var CLIEngine = require(eslintPath).CLIEngine;
     return new CLIEngine(opts);
   }
 
   var fs = require('fs');
+  var path = require('path');
   var cli = getCli();
   var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
   var noop = function () {};
+
+  function uniq(arr) {
+    return arr.reduce(function (result, item) {
+      if (result.indexOf(item) === -1) {
+        result.push(item);
+      }
+      return result;
+    }, []);
+  }
+
+  function normalizeDir(dirPath) {
+    if (dirPath.match(/(\\|\/)$/)) {
+      dirPath = dirPath.slice(0, -1);
+    }
+    return process.platform === 'win32' ? dirPath.replace(/\//g, '\\') : dirPath;
+  }
 
   function _setProjectRoot(projectRoot, prevProjectRoot) {
     var opts = {};
@@ -61,6 +78,27 @@
         noop(e);
       }
     }
+
+    // make sure plugins are loadable from current project directory
+    var nodePaths = process.env.NODE_PATH ? process.env.NODE_PATH.split(path.delimiter) : [];
+    if (prevProjectRoot) {
+      // remove from NODE_PATH
+      prevProjectRoot = normalizeDir(prevProjectRoot);
+      var io = nodePaths.indexOf(prevProjectRoot);
+      if (io !== -1) {
+        nodePaths.splice(io, 1);
+      }
+    }
+    if (projectRoot) {
+      // add to NODE_PATH
+      projectRoot = normalizeDir(projectRoot);
+      nodePaths = [projectRoot].concat(nodePaths);
+    }
+    nodePaths = uniq(nodePaths);
+    process.env.NODE_PATH = nodePaths.join(path.delimiter);
+    require('module').Module._initPaths();
+
+    // console.log('ESLint NODE_PATH', process.env.NODE_PATH);
 
     cli = getCli(eslintPath, opts);
   }
