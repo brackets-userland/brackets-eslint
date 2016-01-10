@@ -4,9 +4,19 @@
 (function () {
   'use strict';
 
+  function getCli(eslintPath, opts) {
+    eslintPath = eslintPath || 'eslint';
+
+    // log version to console to check if we're using the correct eslint
+    var pkgVersion = require(eslintPath + '/package.json').version;
+    console.log('using ESLint version', pkgVersion, 'from:', eslintPath);
+
+    var CLIEngine = require(eslintPath).CLIEngine;
+    return new CLIEngine(opts);
+  }
+
   var fs = require('fs');
-  var CLIEngine = require('eslint').CLIEngine;
-  var cli = new CLIEngine();
+  var cli = getCli();
   var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
@@ -14,10 +24,22 @@
 
   function _setProjectRoot(projectRoot) {
     var opts = {};
+    var eslintPath;
     var rulesDirPath;
     var ignorePath;
 
     if (projectRoot) {
+      eslintPath = projectRoot + 'node_modules/eslint';
+      try {
+        if (fs.statSync(eslintPath).isDirectory()) {
+          // no action required
+        } else {
+          throw new Error('not found');
+        }
+      } catch (e) {
+        eslintPath = null;
+      }
+
       rulesDirPath = projectRoot + '.eslintrules';
       try {
         if (fs.statSync(rulesDirPath).isDirectory()) {
@@ -40,7 +62,7 @@
       }
     }
 
-    cli = new CLIEngine(opts);
+    cli = getCli(eslintPath, opts);
   }
 
   require('enable-global-packages').on('ready', function () {
