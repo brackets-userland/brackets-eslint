@@ -22,7 +22,7 @@
   var domainManager = null;
   var noop = function () {};
 
-  function _setProjectRoot(projectRoot) {
+  function _setProjectRoot(projectRoot, prevProjectRoot) {
     var opts = {};
     var eslintPath;
     var rulesDirPath;
@@ -72,7 +72,7 @@
 
   function lintFile(fullPath, projectRoot, callback) {
     if (projectRoot !== currentProjectRoot) {
-      _setProjectRoot(projectRoot);
+      _setProjectRoot(projectRoot, currentProjectRoot);
       currentProjectRoot = projectRoot;
     }
     fs.readFile(fullPath, {encoding: 'utf8'}, function (err, text) {
