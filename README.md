@@ -21,7 +21,7 @@ Move them to `.eslintrules` folder in your project root like you can see in this
 
 ## Custom parsers and plugins
 
-Extension is able to re-use globally installed npm modules, only thing you have to do is install them:
+Extension tries to use plugins installed in the current project and if not found, fallbacks to globally installed ones.
 
 ```
 npm install --global eslint-plugin-react
