@@ -15,9 +15,16 @@
     return new CLIEngine(opts);
   }
 
+  function eslintVersion(eslintPath) {
+    eslintPath = eslintPath || 'eslint';
+    var pkgVersion = require(eslintPath + '/package.json').version;
+    return pkgVersion;
+  }
+
   var fs = require('fs');
   var path = require('path');
   var cli = getCli();
+  var currentVersion = eslintVersion();
   var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
@@ -101,6 +108,7 @@
     // console.log('ESLint NODE_PATH', process.env.NODE_PATH);
 
     cli = getCli(eslintPath, opts);
+    currentVersion = eslintVersion(eslintPath);
   }
 
   require('enable-global-packages').on('ready', function () {
@@ -134,6 +142,10 @@
     });
   }
 
+  function getESLintVersion() {
+    return currentVersion;
+  }
+
   exports.init = function (_domainManager) {
     domainManager = _domainManager;
 
@@ -143,6 +155,15 @@
         minor: 1
       });
     }
+
+    domainManager.registerCommand(
+      domainName,
+      'getESLintVersion',
+      getESLintVersion,
+      false,
+      'get the version of currently used ESLint',
+      []
+    );
 
     domainManager.registerCommand(
       domainName,
