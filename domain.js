@@ -88,10 +88,11 @@
 
     // make sure plugins are loadable from current project directory
     var nodePaths = process.env.NODE_PATH ? process.env.NODE_PATH.split(path.delimiter) : [];
+    var io;
     if (prevProjectRoot) {
       // remove from NODE_PATH
       prevProjectRoot = normalizeDir(prevProjectRoot);
-      var io = nodePaths.indexOf(prevProjectRoot);
+      io = nodePaths.indexOf(prevProjectRoot);
       if (io !== -1) {
         nodePaths.splice(io, 1);
       }

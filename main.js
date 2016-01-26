@@ -48,7 +48,7 @@ define(function (require, exports, module) {
     nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report) {
         if (report.results.length > 1) {
-          console.warn('ESLint returned multiple results, where only one set was expected');
+          //console.warn('ESLint returned multiple results, where only one set was expected');
         }
         var results = report.results[0];
 
@@ -56,8 +56,8 @@ define(function (require, exports, module) {
           var version = res.split('.')[0];
           var remapped = remapResults(results.messages, version);
           deferred.resolve(remapped);
-        }, function (err) {
-          console.log('Could not get ESLint version, assuming 1', err);
+        }, function () {
+          //console.log('Could not get ESLint version, assuming 1');
           var version = 1;
           var remapped = remapResults(results.messages, version);
           deferred.resolve(remapped);
