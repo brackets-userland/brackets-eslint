@@ -51,18 +51,10 @@ define(function (require, exports, module) {
           //console.warn('ESLint returned multiple results, where only one set was expected');
         }
         var results = report.results[0];
-
-        nodeDomain.exec('getESLintVersion').then(function(res) {
-          var version = res.split('.')[0];
-          var remapped = remapResults(results.messages, version);
-          deferred.resolve(remapped);
-        }, function () {
-          //console.log('Could not get ESLint version, assuming 1');
-          var version = 1;
-          var remapped = remapResults(results.messages, version);
-          deferred.resolve(remapped);
-        });
-
+        //if version is missing, assume 1
+        var version = report.eslintVersion ? report.eslintVersion.split('.')[0] : 1;
+        var remapped = remapResults(results.messages, version);
+        deferred.resolve(remapped);
       }, function (err) {
         deferred.reject(err);
       });
