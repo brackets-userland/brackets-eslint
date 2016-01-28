@@ -17,9 +17,10 @@ define(function (require, exports, module) {
   var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
 
   // this will map ESLint output to match format expected by Brackets
-  function remapResults(results) {
+  function remapResults(results, version) {
     return {
       errors: results.map(function (result) {
+        var offset = version < 1 ? 0 : 1;
         var message = result.message;
         if (result.ruleId) {
           message += ' [' + result.ruleId + ']';
@@ -28,7 +29,7 @@ define(function (require, exports, module) {
           message: message,
           pos: {
             line: result.line - 1,
-            ch: result.column
+            ch: result.column - offset
           },
           type: result.ruleId
         };
@@ -47,10 +48,12 @@ define(function (require, exports, module) {
     nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report) {
         if (report.results.length > 1) {
-          console.warn('ESLint returned multiple results, where only one set was expected');
+          //console.warn('ESLint returned multiple results, where only one set was expected');
         }
         var results = report.results[0];
-        var remapped = remapResults(results.messages);
+        //if version is missing, assume 1
+        var version = report.eslintVersion ? report.eslintVersion.split('.')[0] : 1;
+        var remapped = remapResults(results.messages, version);
         deferred.resolve(remapped);
       }, function (err) {
         deferred.reject(err);

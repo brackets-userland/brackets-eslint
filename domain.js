@@ -15,9 +15,16 @@
     return new CLIEngine(opts);
   }
 
+  function getEslintVersion(eslintPath) {
+    eslintPath = eslintPath || 'eslint';
+    var pkgVersion = require(eslintPath + '/package.json').version;
+    return pkgVersion;
+  }
+
   var fs = require('fs');
   var path = require('path');
   var cli = getCli();
+  var currentVersion = getEslintVersion();
   var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
@@ -81,10 +88,11 @@
 
     // make sure plugins are loadable from current project directory
     var nodePaths = process.env.NODE_PATH ? process.env.NODE_PATH.split(path.delimiter) : [];
+    var io;
     if (prevProjectRoot) {
       // remove from NODE_PATH
       prevProjectRoot = normalizeDir(prevProjectRoot);
-      var io = nodePaths.indexOf(prevProjectRoot);
+      io = nodePaths.indexOf(prevProjectRoot);
       if (io !== -1) {
         nodePaths.splice(io, 1);
       }
@@ -101,6 +109,7 @@
     // console.log('ESLint NODE_PATH', process.env.NODE_PATH);
 
     cli = getCli(eslintPath, opts);
+    currentVersion = getEslintVersion(eslintPath);
   }
 
   require('enable-global-packages').on('ready', function () {
@@ -127,6 +136,7 @@
       var res;
       try {
         res = cli.executeOnText(text, relativePath);
+        res.eslintVersion = currentVersion;
       } catch (e) {
         err = e.toString();
       }
