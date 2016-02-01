@@ -5,14 +5,11 @@ define(function (require, exports, module) {
 
   // imports
   var CodeInspection = brackets.getModule('language/CodeInspection');
-  var LanguageManager = brackets.getModule('language/LanguageManager');
   var ProjectManager = brackets.getModule('project/ProjectManager');
   var ExtensionUtils = brackets.getModule('utils/ExtensionUtils');
   var NodeDomain = brackets.getModule('utils/NodeDomain');
 
   // constants
-  var JS_LANGUAGE = LanguageManager.getLanguageForExtension('js');
-  var JSX_LANGUAGE = LanguageManager.getLanguageForExtension('jsx');
   var LINTER_NAME = 'ESLint';
   var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
 
@@ -63,7 +60,7 @@ define(function (require, exports, module) {
   }
 
   // register a linter with CodeInspection
-  [JS_LANGUAGE.getId(), JSX_LANGUAGE.getId()].forEach(function (langId) {
+  ['javascript', 'jsx'].forEach(function (langId) {
     CodeInspection.register(langId, {
       name: LINTER_NAME,
       scanFile: handleLintSync,
