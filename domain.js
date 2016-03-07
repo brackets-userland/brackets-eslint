@@ -23,8 +23,14 @@
 
   var fs = require('fs');
   var path = require('path');
-  var cli = getCli();
-  var currentVersion = getEslintVersion();
+  var cli;
+  var currentVersion;
+  try {
+    cli = getCli();
+    currentVersion = getEslintVersion();
+  } catch (err) {
+    console.error('[brackets-eslint] ' + err);
+  }
   var currentProjectRoot = null;
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
@@ -108,8 +114,12 @@
 
     // console.log('ESLint NODE_PATH', process.env.NODE_PATH);
 
-    cli = getCli(eslintPath, opts);
-    currentVersion = getEslintVersion(eslintPath);
+    try {
+      cli = getCli(eslintPath, opts);
+      currentVersion = getEslintVersion(eslintPath);
+    } catch (err) {
+      console.error('[brackets-eslint] ' + err);
+    }
   }
 
   require('enable-global-packages').on('ready', function () {
