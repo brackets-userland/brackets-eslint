@@ -4,6 +4,22 @@
 (function () {
   'use strict';
 
+  var fs = require('fs');
+  var path = require('path');
+  var cli;
+  var currentVersion;
+  try {
+    cli = getCli();
+    currentVersion = getEslintVersion();
+  } catch (err) {
+    console.error('[brackets-eslint] ' + err);
+  }
+  var currentProjectRoot = null;
+  var defaultCwd = process.cwd();
+  var domainName = 'zaggino.brackets-eslint';
+  var domainManager = null;
+  var noop = function () {};
+
   function getCli(eslintPath, opts) {
     eslintPath = eslintPath || 'eslint';
 
@@ -20,21 +36,6 @@
     var pkgVersion = require(eslintPath + '/package.json').version;
     return pkgVersion;
   }
-
-  var fs = require('fs');
-  var path = require('path');
-  var cli;
-  var currentVersion;
-  try {
-    cli = getCli();
-    currentVersion = getEslintVersion();
-  } catch (err) {
-    console.error('[brackets-eslint] ' + err);
-  }
-  var currentProjectRoot = null;
-  var domainName = 'zaggino.brackets-eslint';
-  var domainManager = null;
-  var noop = function () {};
 
   function uniq(arr) {
     return arr.reduce(function (result, item) {
@@ -107,6 +108,9 @@
       // add to NODE_PATH
       projectRoot = normalizeDir(projectRoot);
       nodePaths = [projectRoot].concat(nodePaths);
+      process.chdir(projectRoot);
+    } else {
+      process.chdir(defaultCwd);
     }
     nodePaths = uniq(nodePaths);
     process.env.NODE_PATH = nodePaths.join(path.delimiter);
