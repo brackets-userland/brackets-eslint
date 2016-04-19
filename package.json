@@ -28,6 +28,7 @@
     "babel-eslint": "latest",
     "enable-global-packages": "latest",
     "eslint": "latest",
+    "eslint-config-eslint": "latest",
     "eslint-plugin-react": "latest"
   },
   "devDependencies": {

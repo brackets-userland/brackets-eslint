@@ -1,5 +1,5 @@
-/*eslint no-process-env:0*/
-/*global require, exports*/
+/* eslint no-process-env:0 */
+/* global require, exports */
 
 (function () {
   'use strict';
@@ -8,17 +8,10 @@
   var path = require('path');
   var cli;
   var currentVersion;
-  try {
-    cli = getCli();
-    currentVersion = getEslintVersion();
-  } catch (err) {
-    console.error('[brackets-eslint] ' + err);
-  }
   var currentProjectRoot = null;
   var defaultCwd = process.cwd();
   var domainName = 'zaggino.brackets-eslint';
   var domainManager = null;
-  var noop = function () {};
 
   function getCli(eslintPath, opts) {
     eslintPath = eslintPath || 'eslint';
@@ -35,6 +28,13 @@
     eslintPath = eslintPath || 'eslint';
     var pkgVersion = require(eslintPath + '/package.json').version;
     return pkgVersion;
+  }
+
+  try {
+    cli = getCli();
+    currentVersion = getEslintVersion();
+  } catch (err) {
+    console.error('[brackets-eslint] ' + err);
   }
 
   function uniq(arr) {
@@ -67,7 +67,7 @@
         } else {
           throw new Error('not found');
         }
-      } catch (e) {
+      } catch (ignoreErr) {
         eslintPath = null;
       }
 
@@ -76,9 +76,8 @@
         if (fs.statSync(rulesDirPath).isDirectory()) {
           opts.rulePaths = [rulesDirPath];
         }
-      } catch (e) {
+      } catch (ignoreErr) {
         // no action required
-        noop(e);
       }
 
       ignorePath = projectRoot + '.eslintignore';
@@ -87,9 +86,8 @@
           opts.ignore = true;
           opts.ignorePath = ignorePath;
         }
-      } catch (e) {
+      } catch (ignoreErr) {
         // no action required
-        noop(e);
       }
     }
 
@@ -154,12 +152,13 @@
       } catch (e) {
         err = e.toString();
       }
-      callback(err, res);
+      return callback(err, res);
     });
   }
 
-  var fixFile = function (code, fullPath, callback) {
-    var res, err;
+  function fixFile(code, fullPath, callback) {
+    var res;
+    var err;
     try {
       cli.options.fix = true;
       res = cli.executeOnText(code, fullPath);
@@ -168,7 +167,7 @@
     }
     cli.options.fix = false;
     callback(err, res);
-  };
+  }
 
   exports.init = function (_domainManager) {
     domainManager = _domainManager;

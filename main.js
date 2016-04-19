@@ -1,4 +1,4 @@
-/*global $, brackets, define*/
+/* global $, brackets, define */
 
 define(function (require, exports, module) {
   'use strict';
@@ -21,8 +21,8 @@ define(function (require, exports, module) {
 
   // this will map ESLint output to match format expected by Brackets
   function remapResults(results, version) {
-    var SEVERITY_ERROR = 2,
-      SEVERITY_WARNING = 1;
+    var SEVERITY_ERROR = 2;
+    var SEVERITY_WARNING = 1;
 
     function mapResult(result) {
       var offset = version < 1 ? 0 : 1;
@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         message += ' [' + result.ruleId + ']';
       }
       var severity;
-      switch(result.severity) {
+      switch (result.severity) {
       case SEVERITY_ERROR:
         severity = 'ERROR: ';
         break;
@@ -67,10 +67,10 @@ define(function (require, exports, module) {
     nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report) {
         if (report.results.length > 1) {
-          //console.warn('ESLint returned multiple results, where only one set was expected');
+          // console.warn('ESLint returned multiple results, where only one set was expected');
         }
         var results = report.results[0];
-        //if version is missing, assume 1
+        // if version is missing, assume 1
         var version = report.eslintVersion ? report.eslintVersion.split('.')[0] : 1;
         var remapped = remapResults(results.messages, version);
         deferred.resolve(remapped);
@@ -81,17 +81,19 @@ define(function (require, exports, module) {
     return deferred.promise();
   }
 
-  var handleAutoFix = function () {
-    var doc = DocumentManager.getCurrentDocument(),
-      language = doc.getLanguage(),
-      fileType = language._id,
-      fullPath = doc.file.fullPath,
-      editor = EditorManager.getCurrentFullEditor(),
-      cursor = editor.getCursorPos(),
-      scroll = editor.getScrollPos();
+  function handleAutoFix() {
+    var doc = DocumentManager.getCurrentDocument();
+    var language = doc.getLanguage();
+    var fileType = language._id;
+    var fullPath = doc.file.fullPath;
+    var editor = EditorManager.getCurrentFullEditor();
+    var cursor = editor.getCursorPos();
+    var scroll = editor.getScrollPos();
 
     // Do nothing unless it's a Javascript file
-    if (fileType !== 'javascript') { return; }
+    if (fileType !== 'javascript') {
+      return;
+    }
 
     nodeDomain.exec('fixFile', doc.getText(), fullPath)
       .then(function (response) {
@@ -104,7 +106,7 @@ define(function (require, exports, module) {
         editor.setCursorPos(cursor);
         editor.setScrollPos(scroll.x, scroll.y);
       }/* TODO: Error handling?*/);
-  };
+  }
 
   // =================================================================================
 
