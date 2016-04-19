@@ -8,6 +8,12 @@ define(function (require, exports, module) {
   var ProjectManager = brackets.getModule('project/ProjectManager');
   var ExtensionUtils = brackets.getModule('utils/ExtensionUtils');
   var NodeDomain = brackets.getModule('utils/NodeDomain');
+  var CommandManager = brackets.getModule('command/CommandManager');
+  var Menus = brackets.getModule('command/Menus');
+  var DocumentManager = brackets.getModule('document/DocumentManager');
+  var EditorManager = brackets.getModule('editor/EditorManager');
+  var AUTOFIX_COMMAND_ID = 'zaggino.brackets-eslint.autofix';
+  var AUTOFIX_COMMAND_NAME = 'Auto-fix with ESLint';
 
   // constants
   var LINTER_NAME = 'ESLint';
@@ -74,6 +80,45 @@ define(function (require, exports, module) {
 
     return deferred.promise();
   }
+
+  var handleAutoFix = function () {
+    var doc = DocumentManager.getCurrentDocument(),
+      language = doc.getLanguage(),
+      fileType = language._id,
+      fullPath = doc.file.fullPath,
+      editor = EditorManager.getCurrentFullEditor(),
+      cursor = editor.getCursorPos(),
+      scroll = editor.getScrollPos();
+
+    // Do nothing unless it's a Javascript file
+    if (fileType !== 'javascript') { return; }
+
+    nodeDomain.exec('fixFile', doc.getText(), fullPath)
+      .then(function (response) {
+        var text = response && response.results[0] ? response.results[0].output : '';
+        if (text) {
+          doc.setText(text);
+        }
+
+        // Reset editor back to previous cursor position
+        editor.setCursorPos(cursor);
+        editor.setScrollPos(scroll.x, scroll.y);
+      }/* TODO: Error handling?*/);
+  };
+
+  // =================================================================================
+
+  // Register the auto-fix command
+  CommandManager.register(AUTOFIX_COMMAND_NAME, AUTOFIX_COMMAND_ID, handleAutoFix);
+
+  // Add to Edit menu
+  var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
+  editMenu.addMenuDivider();
+  editMenu.addMenuItem(AUTOFIX_COMMAND_ID);
+
+  // Add context-menu option (only for Javascript files)
+  var contextMenu = Menus.getContextMenu(Menus.ContextMenuIds.EDITOR_MENU);
+  contextMenu.addMenuItem(AUTOFIX_COMMAND_ID);
 
   // register a linter with CodeInspection
   ['javascript', 'jsx'].forEach(function (langId) {

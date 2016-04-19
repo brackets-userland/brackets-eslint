@@ -158,6 +158,18 @@
     });
   }
 
+  var fixFile = function (code, fullPath, callback) {
+    var res, err;
+    try {
+      cli.options.fix = true;
+      res = cli.executeOnText(code, fullPath);
+    } catch (e) {
+      err = e;
+    }
+    cli.options.fix = false;
+    callback(err, res);
+  };
+
   exports.init = function (_domainManager) {
     domainManager = _domainManager;
 
@@ -189,6 +201,21 @@
           type: 'object'
         }
       ]
+    );
+
+    domainManager.registerCommand(
+      domainName,
+      'fixFile',
+      fixFile,
+      true,
+      'Fixes the current file using the ESLint auto-fixing feature',
+      [{
+        name: 'code',
+        type: 'string'
+      }, {
+        name: 'fullPath',
+        type: 'string'
+      }]
     );
 
   };
