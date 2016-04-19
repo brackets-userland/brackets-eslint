@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "gulp": "3.x",
-    "gulp-eslint": "0.x",
+    "gulp-eslint": "2.x",
     "gulp-util": "3.x",
     "through2": "0.x"
   },
