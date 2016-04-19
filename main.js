@@ -15,22 +15,38 @@ define(function (require, exports, module) {
 
   // this will map ESLint output to match format expected by Brackets
   function remapResults(results, version) {
+    var SEVERITY_ERROR = 2,
+      SEVERITY_WARNING = 1;
+
+    function mapResult(result) {
+      var offset = version < 1 ? 0 : 1;
+      var message = result.message;
+      if (result.ruleId) {
+        message += ' [' + result.ruleId + ']';
+      }
+      var severity;
+      switch(result.severity) {
+      case SEVERITY_ERROR:
+        severity = 'ERROR: ';
+        break;
+      case SEVERITY_WARNING:
+        severity = 'WARNING: ';
+        break;
+      default:
+        severity = 'UNKNOWN: ';
+      }
+      return {
+        message: severity + message,
+        pos: {
+          line: result.line - 1,
+          ch: result.column - offset
+        },
+        type: result.ruleId
+      };
+    }
+
     return {
-      errors: results.map(function (result) {
-        var offset = version < 1 ? 0 : 1;
-        var message = result.message;
-        if (result.ruleId) {
-          message += ' [' + result.ruleId + ']';
-        }
-        return {
-          message: message,
-          pos: {
-            line: result.line - 1,
-            ch: result.column - offset
-          },
-          type: result.ruleId
-        };
-      })
+      errors: results.map(mapResult)
     };
   }
 
