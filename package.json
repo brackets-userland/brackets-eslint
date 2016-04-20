@@ -1,6 +1,6 @@
 {
   "name": "brackets-eslint",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "Adds ESLint support to Brackets",
   "keywords": [
     "brackets-extension",
@@ -28,11 +28,12 @@
     "babel-eslint": "latest",
     "enable-global-packages": "latest",
     "eslint": "latest",
+    "eslint-config-eslint": "latest",
     "eslint-plugin-react": "latest"
   },
   "devDependencies": {
     "gulp": "3.x",
-    "gulp-eslint": "0.x",
+    "gulp-eslint": "2.x",
     "gulp-util": "3.x",
     "through2": "0.x"
   },
