@@ -3,6 +3,9 @@
 define(function (require, exports, module) {
   'use strict';
 
+  // Load extension modules that are not included by core
+  var gutterManager = require('src/GutterManager')();
+
   // imports
   var CodeInspection = brackets.getModule('language/CodeInspection');
   var ProjectManager = brackets.getModule('project/ProjectManager');
@@ -12,12 +15,16 @@ define(function (require, exports, module) {
   var Menus = brackets.getModule('command/Menus');
   var DocumentManager = brackets.getModule('document/DocumentManager');
   var EditorManager = brackets.getModule('editor/EditorManager');
-  var AUTOFIX_COMMAND_ID = 'zaggino.brackets-eslint.autofix';
+  var EXTENSION_KEY = 'zaggino.brackets-eslint';
+  var AUTOFIX_COMMAND_ID = EXTENSION_KEY + '.autofix';
   var AUTOFIX_COMMAND_NAME = 'Auto-fix with ESLint';
 
   // constants
   var LINTER_NAME = 'ESLint';
-  var nodeDomain = new NodeDomain('zaggino.brackets-eslint', ExtensionUtils.getModulePath(module, 'domain'));
+  var nodeDomain = new NodeDomain(EXTENSION_KEY, ExtensionUtils.getModulePath(module, 'domain'));
+
+  // Load CSS
+  ExtensionUtils.loadStyleSheet(module, 'styles/brackets-eslint.less');
 
   // this will map ESLint output to match format expected by Brackets
   function remapResults(results, version) {
@@ -63,7 +70,6 @@ define(function (require, exports, module) {
   function handleLintAsync(text, fullPath) {
     var deferred = new $.Deferred();
     var projectRoot = ProjectManager.getProjectRoot().fullPath;
-
     nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report) {
         if (report.results.length > 1) {
@@ -73,6 +79,9 @@ define(function (require, exports, module) {
         // if version is missing, assume 1
         var version = report.eslintVersion ? report.eslintVersion.split('.')[0] : 1;
         var remapped = remapResults(results.messages, version);
+
+        gutterManager.setGutterMarkers(results.messages);
+        gutterManager.refresh();
         deferred.resolve(remapped);
       }, function (err) {
         deferred.reject(err);

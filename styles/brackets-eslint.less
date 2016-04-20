@@ -1,0 +1,29 @@
+@warning-color: orange;
+@error-color: red;
+
+.brackets-eslint-gutter {
+  cursor: default;
+  line-height: 100%;
+  display: inline-flex;
+
+  &.warning {
+    &:after {
+      content: ' ';
+      .circle(1.1em, @warning-color);
+    }
+  }
+
+  &.error {
+     &:after {
+      content: ' ';
+      .circle(1.1em, @error-color);
+    }
+  }
+}
+
+.circle(@size, @color) {
+  width: @size;
+  height: @size;
+  background: @color;
+  border-radius: 50%;
+}
