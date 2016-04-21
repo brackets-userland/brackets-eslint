@@ -1,29 +1,34 @@
+@icon-height: 1.2em;
+@icon-width: 1.3em;
+
+// colors
 @warning-color: orange;
 @error-color: red;
 
+// urls
+@warning-icon-url: 'images/noun_116102.svg';
+@error-icon-url: 'images/noun_61752.svg';
+
 .brackets-eslint-gutter {
   cursor: default;
-  line-height: 100%;
+  line-height: @icon-height;
   display: inline-flex;
 
   &.warning {
     &:after {
       content: ' ';
-      .circle(1.1em, @warning-color);
+      width: @icon-width;
+      background-color: @warning-color;
+      -webkit-mask: url(@warning-icon-url)  center / contain no-repeat;
     }
   }
 
   &.error {
      &:after {
       content: ' ';
-      .circle(1.1em, @error-color);
+      width: @icon-width;
+      background-color: @error-color;
+      -webkit-mask: url(@error-icon-url)  center / contain no-repeat;
     }
   }
-}
-
-.circle(@size, @color) {
-  width: @size;
-  height: @size;
-  background: @color;
-  border-radius: 50%;
 }

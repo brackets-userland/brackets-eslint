@@ -84,8 +84,8 @@ define(function () {
     return doc && doc._masterEditor;
   }
 
-  function refresh() {
-      // we get a list of editors, which need to be refreshed
+  function refresh(fullPath) {
+    // we get a list of editors, which need to be refreshed
     var editors = _.compact(_.map(MainViewManager.getPaneIdList(), function (paneId) {
       return getEditorFromPane(paneId);
     }));
@@ -94,7 +94,9 @@ define(function () {
     prepareGutters(editors);
 
     var activeEditor = EditorManager.getActiveEditor();
-    showGutters(activeEditor, eslintMarkers);
+    if (activeEditor.document === DocumentManager.getOpenDocumentForPath(fullPath)) {
+      showGutters(activeEditor, eslintMarkers);
+    }
   }
 
   function GutterManager() {

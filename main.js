@@ -3,9 +3,6 @@
 define(function (require, exports, module) {
   'use strict';
 
-  // Load extension modules that are not included by core
-  var gutterManager = require('src/GutterManager')();
-
   // imports
   var CodeInspection = brackets.getModule('language/CodeInspection');
   var ProjectManager = brackets.getModule('project/ProjectManager');
@@ -18,6 +15,10 @@ define(function (require, exports, module) {
   var EXTENSION_KEY = 'zaggino.brackets-eslint';
   var AUTOFIX_COMMAND_ID = EXTENSION_KEY + '.autofix';
   var AUTOFIX_COMMAND_NAME = 'Auto-fix with ESLint';
+
+   // Load extension modules that are not included by core
+  var gutterManager = require('src/GutterManager')();
+  var prefsManager = require('src/PreferencesManager')(EXTENSION_KEY);
 
   // constants
   var LINTER_NAME = 'ESLint';
@@ -79,9 +80,10 @@ define(function (require, exports, module) {
         // if version is missing, assume 1
         var version = report.eslintVersion ? report.eslintVersion.split('.')[0] : 1;
         var remapped = remapResults(results.messages, version);
-
-        gutterManager.setGutterMarkers(results.messages);
-        gutterManager.refresh();
+        if (prefsManager.gutter) {
+          gutterManager.setGutterMarkers(results.messages);
+          gutterManager.refresh(fullPath);
+        }
         deferred.resolve(remapped);
       }, function (err) {
         deferred.reject(err);
