@@ -26,3 +26,13 @@ Extension tries to use plugins installed in the current project and if not found
 ```
 npm install --global eslint-plugin-react
 ```
+
+## Configuration defaults
+
+To disable the warning and error icons in the gutter you can configure the `brackets.json` as followed:
+
+```JSON
+{
+  "brackets-eslint-gutter": false
+}
+```

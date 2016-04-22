@@ -1,34 +1,32 @@
-@icon-height: 1.2em;
-@icon-width: 1.3em;
+@icon-size: 1.1em;
 
 // colors
 @warning-color: orange;
 @error-color: red;
 
 // urls
-@warning-icon-url: 'images/noun_116102.svg';
-@error-icon-url: 'images/noun_61752.svg';
+@warning-icon-url: 'images/warning-mask.png';
+@error-icon-url: 'images/error-mask.png';
 
 .brackets-eslint-gutter {
   cursor: default;
-  line-height: @icon-height;
+  line-height: @icon-size;
   display: inline-flex;
 
   &.warning {
-    &:after {
-      content: ' ';
-      width: @icon-width;
-      background-color: @warning-color;
-      -webkit-mask: url(@warning-icon-url)  center / contain no-repeat;
-    }
+    .icon(@icon-size, @warning-color, @warning-icon-url);
   }
 
   &.error {
-     &:after {
-      content: ' ';
-      width: @icon-width;
-      background-color: @error-color;
-      -webkit-mask: url(@error-icon-url)  center / contain no-repeat;
-    }
+    .icon(@icon-size, @error-color, @error-icon-url);
+  }
+}
+
+.icon(@width, @color, @url) {
+   &:after {
+     content: ' ';
+     width: @width;
+     background-color: @color;
+     -webkit-mask: url(@url) center / contain no-repeat;
   }
 }
