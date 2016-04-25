@@ -1,0 +1,32 @@
+@icon-size: 1.1em;
+
+// colors
+@warning-color: orange;
+@error-color: red;
+
+// urls
+@warning-icon-url: 'images/warning-mask.png';
+@error-icon-url: 'images/error-mask.png';
+
+.brackets-eslint-gutter {
+  cursor: default;
+  line-height: @icon-size;
+  display: inline-flex;
+
+  &.warning {
+    .icon(@icon-size, @warning-color, @warning-icon-url);
+  }
+
+  &.error {
+    .icon(@icon-size, @error-color, @error-icon-url);
+  }
+}
+
+.icon(@width, @color, @url) {
+   &:after {
+     content: ' ';
+     width: @width;
+     background-color: @color;
+     -webkit-mask: url(@url) center / contain no-repeat;
+  }
+}
