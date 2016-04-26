@@ -33,6 +33,6 @@ To disable the warning and error icons in the gutter you can configure the `brac
 
 ```JSON
 {
-  "brackets-eslint-gutter": false
+  "brackets-eslint.gutterMarks": false
 }
 ```

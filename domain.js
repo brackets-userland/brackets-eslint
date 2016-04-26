@@ -4,14 +4,21 @@
 (function () {
   'use strict';
 
+  var PackageJson = require('./package.json');
+  var EXTENSION_NAME = PackageJson.name;
+  var EXTENSION_UNIQUE_NAME = 'zaggino.' + EXTENSION_NAME;
   var fs = require('fs');
   var path = require('path');
   var cli;
   var currentVersion;
   var currentProjectRoot = null;
   var defaultCwd = process.cwd();
-  var domainName = 'zaggino.brackets-eslint';
+  var domainName = EXTENSION_UNIQUE_NAME;
   var domainManager = null;
+
+  function logError(err) {
+    console.error('[' + EXTENSION_NAME + '] ' + err);
+  }
 
   function getCli(eslintPath, opts) {
     // log version to console to check if we're using the correct eslint
@@ -29,7 +36,7 @@
     cli = getCli();
     currentVersion = getEslintVersion();
   } catch (err) {
-    console.error('[brackets-eslint] ' + err);
+    logError(err);
   }
 
   function uniq(arr) {
@@ -115,7 +122,7 @@
       cli = getCli(eslintPath, opts);
       currentVersion = getEslintVersion(eslintPath);
     } catch (err) {
-      console.error('[brackets-eslint] ' + err);
+      logError(err);
     }
   }
 

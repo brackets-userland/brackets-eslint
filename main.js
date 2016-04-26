@@ -12,17 +12,24 @@ define(function (require, exports, module) {
   var Menus = brackets.getModule('command/Menus');
   var DocumentManager = brackets.getModule('document/DocumentManager');
   var EditorManager = brackets.getModule('editor/EditorManager');
-  var EXTENSION_KEY = 'zaggino.brackets-eslint';
-  var AUTOFIX_COMMAND_ID = EXTENSION_KEY + '.autofix';
+  var PreferencesManager = brackets.getModule('preferences/PreferencesManager');
+  var PackageJson = JSON.parse(require('text!./package.json'));
+  var EXTENSION_NAME = PackageJson.name;
+  var EXTENSION_UNIQUE_NAME = 'zaggino.' + EXTENSION_NAME;
+  var AUTOFIX_COMMAND_ID = EXTENSION_UNIQUE_NAME + '.autofix';
   var AUTOFIX_COMMAND_NAME = 'Auto-fix with ESLint';
 
-   // Load extension modules that are not included by core
+  // Load extension modules that are not included by core
   var gutterManager = require('src/GutterManager')();
-  var prefsManager = require('src/PreferencesManager')(EXTENSION_KEY);
+  var preferences = PreferencesManager.getExtensionPrefs(EXTENSION_NAME);
 
-  // constants
+  // Setup preferences used by the extension
+  preferences.definePreference('gutterMarks', 'boolean', true);
+  preferences.set('gutterMarks', preferences.get('gutterMarks'));
+
+  // Constants
   var LINTER_NAME = 'ESLint';
-  var nodeDomain = new NodeDomain(EXTENSION_KEY, ExtensionUtils.getModulePath(module, 'domain'));
+  var nodeDomain = new NodeDomain(EXTENSION_UNIQUE_NAME, ExtensionUtils.getModulePath(module, 'domain'));
 
   // Load CSS
   ExtensionUtils.loadStyleSheet(module, 'styles/brackets-eslint.less');
@@ -80,7 +87,8 @@ define(function (require, exports, module) {
         // if version is missing, assume 1
         var version = report.eslintVersion ? report.eslintVersion.split('.')[0] : 1;
         var remapped = remapResults(results.messages, version);
-        if (prefsManager.gutter) {
+        var gutterMarks = preferences.get('gutterMarks', projectRoot);
+        if (gutterMarks) {
           gutterManager.setGutterMarkers(results.messages);
           gutterManager.refresh(fullPath);
         }
