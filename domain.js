@@ -14,20 +14,15 @@
   var domainManager = null;
 
   function getCli(eslintPath, opts) {
-    eslintPath = eslintPath || 'eslint';
-
     // log version to console to check if we're using the correct eslint
     // var pkgVersion = require(eslintPath + '/package.json').version;
     // console.log('using ESLint version', pkgVersion, 'from:', eslintPath);
-
-    var CLIEngine = require(eslintPath).CLIEngine;
+    var CLIEngine = require(eslintPath || 'eslint').CLIEngine;
     return new CLIEngine(opts);
   }
 
   function getEslintVersion(eslintPath) {
-    eslintPath = eslintPath || 'eslint';
-    var pkgVersion = require(eslintPath + '/package.json').version;
-    return pkgVersion;
+    return require((eslintPath || 'eslint') + '/package.json').version;
   }
 
   try {
@@ -134,7 +129,7 @@
       _setProjectRoot(projectRoot, currentProjectRoot);
       currentProjectRoot = projectRoot;
     }
-    fs.readFile(fullPath, {encoding: 'utf8'}, function (err, text) {
+    fs.readFile(fullPath, { encoding: 'utf8' }, function (err, text) {
       if (err) {
         return callback(err);
       }

@@ -40,14 +40,14 @@ define(function (require, exports, module) {
       }
       var severity;
       switch (result.severity) {
-      case SEVERITY_ERROR:
-        severity = 'ERROR: ';
-        break;
-      case SEVERITY_WARNING:
-        severity = 'WARNING: ';
-        break;
-      default:
-        severity = 'UNKNOWN: ';
+        case SEVERITY_ERROR:
+          severity = 'ERROR: ';
+          break;
+        case SEVERITY_WARNING:
+          severity = 'WARNING: ';
+          break;
+        default:
+          severity = 'UNKNOWN: ';
       }
       return {
         message: severity + message,

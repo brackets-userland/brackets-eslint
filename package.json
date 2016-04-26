@@ -29,7 +29,8 @@
     "enable-global-packages": "latest",
     "eslint": "latest",
     "eslint-config-eslint": "latest",
-    "eslint-plugin-react": "latest"
+    "eslint-config-pureprofile": "latest",
+    "eslint-plugin-babel": "latest"
   },
   "devDependencies": {
     "gulp": "3.x",
