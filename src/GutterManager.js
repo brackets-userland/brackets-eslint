@@ -76,7 +76,7 @@ define(function () {
 
     var cm = editor._codeMirror;
 
-    _results = _results.filter(function(obj) {
+    _results = _results.filter(function (obj) {
       var severity = obj.severity;
       if (!showGutterError && severity === 2) {
         return false;
@@ -88,7 +88,7 @@ define(function () {
     });
 
     // sortBy severity and line number
-    cm.eslintGutters = _.sortBy(_results, function(obj) {
+    cm.eslintGutters = _.sortBy(_results, function (obj) {
       return [obj.severity, obj.line];
     });
 
@@ -129,10 +129,10 @@ define(function () {
   function GutterManager() {
 
     function setGutterMarkers(markers, option) {
-      if (option && option.error === false) {
+      if (option && option.error != null) {
         showGutterError = option.error === true;
       }
-      if (option && option.warning === false) {
+      if (option && option.warning != null) {
         showGutterWarning = option.warning === true;
       }
       if (markers && markers.length) {
