@@ -8,12 +8,17 @@ define(function () {
   var MainViewManager = brackets.getModule('view/MainViewManager');
   var EditorManager = brackets.getModule('editor/EditorManager');
 
+  var cmLineNumberGutter = 'CodeMirror-linenumbers';
   var gutterName = 'brackets-eslint-gutter';
+  var gutterMarkerName = 'brackets-eslint-gutter-marker';
   var editorsWithGutters = [];
   var eslintMarkers = [];
 
-  var cssWarningClass = 'warning';
-  var cssErrorClass = 'error';
+  var cssWarningClass = 'eslint-warning';
+  var cssErrorClass = 'eslint-error';
+
+  var showGutterWarning = true;
+  var showGutterError = true;
 
   function clearOld(editor) {
     var cm = editor._codeMirror;
@@ -39,7 +44,11 @@ define(function () {
 
     var gutters = cm.getOption('gutters').slice(0);
     if (gutters.indexOf(gutterName) === -1) {
-      gutters.unshift(gutterName);
+      // add the gutter just before the linenumbers if possible
+      var cmLineNumberIdx = gutters.indexOf(cmLineNumberGutter);
+      cmLineNumberIdx = cmLineNumberIdx === -1 ? 0 : cmLineNumberIdx;
+
+      gutters.splice(cmLineNumberIdx, 0, gutterName);
       cm.setOption('gutters', gutters);
     }
 
@@ -66,14 +75,32 @@ define(function () {
     prepareGutter(editor);
 
     var cm = editor._codeMirror;
-    cm.eslintGutters = _.sortBy(_results, 'line');
+
+    _results = _results.filter(function(obj) {
+      var severity = obj.severity;
+      if (!showGutterError && severity === 2) {
+        return false;
+      }
+      if (!showGutterWarning && severity === 1) {
+        return false;
+      }
+      return true;
+    });
+
+    // sortBy severity and line number
+    cm.eslintGutters = _.sortBy(_results, function(obj) {
+      return [obj.severity, obj.line];
+    });
 
     cm.clearGutter(gutterName);
+
     cm.eslintGutters.forEach(function (obj) {
       var severity = obj.severity === 2 ? cssErrorClass : cssWarningClass;
-      var $marker = $('<div>')
-                        .addClass(gutterName + ' ' + severity)
-                        .html('&nbsp;');
+      var $marker = $('<div><span>')
+                        .addClass(gutterMarkerName);
+      $marker.find('span')
+        .addClass(severity)
+        .html('&nbsp;');
       cm.setGutterMarker(obj.line - 1, gutterName, $marker[0]);
     });
   }
@@ -101,7 +128,13 @@ define(function () {
 
   function GutterManager() {
 
-    function setGutterMarkers(markers) {
+    function setGutterMarkers(markers, option) {
+      if (option && option.error === false) {
+        showGutterError = option.error === true;
+      }
+      if (option && option.warning === false) {
+        showGutterWarning = option.warning === true;
+      }
       if (markers && markers.length) {
         eslintMarkers = markers;
       } else {
