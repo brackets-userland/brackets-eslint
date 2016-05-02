@@ -8,24 +8,30 @@
 @warning-icon-url: 'images/warning-mask.png';
 @error-icon-url: 'images/error-mask.png';
 
-.brackets-eslint-gutter {
-  cursor: default;
+.CodeMirror .brackets-eslint-gutter {
+  width: 1em;
+}
+
+.brackets-eslint-gutter-marker {
+  cursor: pointer;
   line-height: @icon-size;
   display: inline-flex;
 
-  &.warning {
+  .eslint-warning {
     .icon(@icon-size, @warning-color, @warning-icon-url);
   }
 
-  &.error {
+  .eslint-error {
     .icon(@icon-size, @error-color, @error-icon-url);
   }
 }
 
 .icon(@width, @color, @url) {
    &:after {
+     position: absolute;
      content: ' ';
      width: @width;
+     height: @width;
      background-color: @color;
      -webkit-mask: url(@url) center / contain no-repeat;
   }

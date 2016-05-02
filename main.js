@@ -87,9 +87,9 @@ define(function (require, exports, module) {
         // if version is missing, assume 1
         var version = report.eslintVersion ? report.eslintVersion.split('.')[0] : 1;
         var remapped = remapResults(results.messages, version);
-        var gutterMarks = preferences.get('gutterMarks', projectRoot);
-        if (gutterMarks) {
-          gutterManager.setGutterMarkers(results.messages);
+        var gutterMarksPref = preferences.get('gutterMarks', projectRoot);
+        if (gutterMarksPref) {
+          gutterManager.setGutterMarkers(results.messages, gutterMarksPref);
           gutterManager.refresh(fullPath);
         }
         deferred.resolve(remapped);

@@ -29,10 +29,18 @@ npm install --global eslint-plugin-react
 
 ## Configuration defaults
 
-To disable the warning and error icons in the gutter you can configure the `brackets.json` as followed:
+To disable the both warning and error icons in the gutter you can configure the `brackets.json` as followed:
 
 ```JSON
 {
   "brackets-eslint.gutterMarks": false
+}
+```
+
+or only disable warnings icons:
+
+```JSON
+{
+  "brackets-eslint.gutterMarks": { "warning" : false}
 }
 ```
