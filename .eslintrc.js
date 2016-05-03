@@ -2,6 +2,7 @@ module.exports = {
   extends: 'pureprofile',
   parser: 'espree',
   parserOptions: { ecmaVersion: 5 },
+  env: { node: true },
   rules: {
     // disable es6 rules
     'prefer-arrow-callback': 0,
