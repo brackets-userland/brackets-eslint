@@ -27,7 +27,7 @@
   "dependencies": {
     "babel-eslint": "latest",
     "enable-global-packages": "latest",
-    "eslint": "latest",
+    "eslint": "<3.0.0",
     "eslint-config-eslint": "latest",
     "eslint-config-pureprofile": "latest",
     "eslint-plugin-babel": "latest"
