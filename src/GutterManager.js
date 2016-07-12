@@ -78,6 +78,9 @@ define(function () {
 
     _results = _results.filter(function (obj) {
       var severity = obj.severity;
+      if (!obj.line) {
+        return false;
+      }
       if (!showGutterError && severity === 2) {
         return false;
       }
