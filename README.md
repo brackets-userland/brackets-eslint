@@ -21,10 +21,10 @@ Move them to `.eslintrules` folder in your project root like you can see in this
 
 ## Custom parsers and plugins
 
-Extension tries to use plugins installed in the current project and if not found, fallbacks to globally installed ones.
+Extension uses eslint plugins installed in the current project. If you're missing a plugin, then in your project directory do:
 
 ```
-npm install --global eslint-plugin-react
+npm install eslint-plugin-react
 ```
 
 ## Configuration defaults
