@@ -32,12 +32,27 @@
     return require((eslintPath || 'eslint') + '/package.json').version;
   }
 
-  try {
-    cli = getCli();
-    currentVersion = getEslintVersion();
-  } catch (err) {
-    logError(err);
+  function refreshEslintCli(eslintPath, opts) {
+    try {
+      currentVersion = getEslintVersion(eslintPath);
+      // brackets can't work with 3.x right now
+      if (/^3/.test(currentVersion)) {
+        var notSupportedVersion = currentVersion;
+        eslintPath = path.resolve(__dirname, 'node_modules', 'eslint');
+        currentVersion = getEslintVersion(eslintPath);
+        logError(
+          'Detected eslint version 3.x (' + notSupportedVersion +
+          '), falling back to default eslint ' + currentVersion
+        );
+      }
+      cli = getCli(eslintPath, opts);
+    } catch (err) {
+      logError(err);
+    }
+
   }
+
+  refreshEslintCli();
 
   function uniq(arr) {
     return arr.reduce(function (result, item) {
@@ -52,7 +67,8 @@
     if (dirPath.match(/(\\|\/)$/)) {
       dirPath = dirPath.slice(0, -1);
     }
-    return process.platform === 'win32' ? dirPath.replace(/\//g, '\\') : dirPath;
+    var dir = process.platform === 'win32' ? dirPath.replace(/\//g, '\\') : dirPath;
+    return path.resolve(dir, 'node_modules');
   }
 
   function _setProjectRoot(projectRoot, prevProjectRoot) {
@@ -117,13 +133,7 @@
     require('module').Module._initPaths();
 
     // console.log('ESLint NODE_PATH', process.env.NODE_PATH);
-
-    try {
-      cli = getCli(eslintPath, opts);
-      currentVersion = getEslintVersion(eslintPath);
-    } catch (err) {
-      logError(err);
-    }
+    refreshEslintCli(eslintPath, opts);
   }
 
   require('enable-global-packages').on('ready', function () {
