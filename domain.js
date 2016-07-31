@@ -12,9 +12,9 @@
   var cli;
   var currentVersion;
   var currentProjectRoot = null;
-  var defaultCwd = process.cwd();
   var domainName = EXTENSION_UNIQUE_NAME;
   var domainManager = null;
+  var globalNodeModulesDirs = [];
 
   function logError(err) {
     console.error('[' + EXTENSION_NAME + '] ' + err);
@@ -78,6 +78,9 @@
     var ignorePath;
 
     if (projectRoot) {
+      // this is critical for correct .eslintrc resolution
+      opts.cwd = projectRoot;
+
       eslintPath = projectRoot + 'node_modules/eslint';
       try {
         if (fs.statSync(eslintPath).isDirectory()) {
@@ -124,22 +127,14 @@
       // add to NODE_PATH
       projectRoot = normalizeDir(projectRoot);
       nodePaths = [projectRoot].concat(nodePaths);
-      process.chdir(projectRoot);
-    } else {
-      process.chdir(defaultCwd);
     }
-    nodePaths = uniq(nodePaths);
+    nodePaths = uniq(nodePaths.concat(globalNodeModulesDirs));
     process.env.NODE_PATH = nodePaths.join(path.delimiter);
     require('module').Module._initPaths();
 
     // console.log('ESLint NODE_PATH', process.env.NODE_PATH);
     refreshEslintCli(eslintPath, opts);
   }
-
-  require('enable-global-packages').on('ready', function () {
-    // global packages are available now
-    _setProjectRoot(currentProjectRoot);
-  });
 
   function lintFile(fullPath, projectRoot, callback) {
     if (projectRoot !== currentProjectRoot) {
@@ -151,12 +146,6 @@
         return callback(err);
       }
       var relativePath = fullPath.indexOf(projectRoot) === 0 ? fullPath.substring(projectRoot.length) : fullPath;
-
-      // this is important for ESLint so .eslintrc is properly loaded
-      // we could go around this by parsing .eslintrc manually but that'd
-      // bring complexity we don't need here right now
-      process.chdir(projectRoot);
-
       var res;
       try {
         res = cli.executeOnText(text, relativePath);
@@ -180,6 +169,11 @@
     cli.options.fix = false;
     callback(err, res);
   }
+
+  require('enable-global-packages').on('ready', function (_globalNodeModulesDirs) {
+    globalNodeModulesDirs = _globalNodeModulesDirs;
+    _setProjectRoot(currentProjectRoot);
+  });
 
   exports.init = function (_domainManager) {
     domainManager = _domainManager;
