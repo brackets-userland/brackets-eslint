@@ -12,6 +12,7 @@
   var cli;
   var currentVersion;
   var currentProjectRoot = null;
+  var defaultCwd = process.cwd();
   var domainName = EXTENSION_UNIQUE_NAME;
   var domainManager = null;
   var globalNodeModulesDirs = [];
@@ -127,6 +128,9 @@
       // add to NODE_PATH
       projectRoot = normalizeDir(projectRoot);
       nodePaths = [projectRoot].concat(nodePaths);
+      process.chdir(projectRoot);
+    } else {
+      process.chdir(defaultCwd);
     }
     nodePaths = uniq(nodePaths.concat(globalNodeModulesDirs));
     process.env.NODE_PATH = nodePaths.join(path.delimiter);
@@ -148,6 +152,7 @@
       var relativePath = fullPath.indexOf(projectRoot) === 0 ? fullPath.substring(projectRoot.length) : fullPath;
       var res;
       try {
+        process.chdir(projectRoot);
         res = cli.executeOnText(text, relativePath);
         res.eslintVersion = currentVersion;
       } catch (e) {
