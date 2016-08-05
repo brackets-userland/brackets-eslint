@@ -11,6 +11,8 @@
   var path = require('path');
   var cli;
   var currentVersion;
+  var nodeVersion = process.versions.node;
+  var isOldNode = /^0/.test(nodeVersion);
   var currentProjectRoot = null;
   var defaultCwd = process.cwd();
   var domainName = EXTENSION_UNIQUE_NAME;
@@ -37,7 +39,7 @@
     try {
       currentVersion = getEslintVersion(eslintPath);
       // brackets can't work with 3.x right now
-      if (/^3/.test(currentVersion)) {
+      if (isOldNode && /^3/.test(currentVersion)) {
         var notSupportedVersion = currentVersion;
         eslintPath = path.resolve(__dirname, 'node_modules', 'eslint');
         currentVersion = getEslintVersion(eslintPath);
