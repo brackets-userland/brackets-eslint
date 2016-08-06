@@ -142,7 +142,7 @@ define(function (require, exports, module) {
   contextMenu.addMenuItem(AUTOFIX_COMMAND_ID);
 
   // register a linter with CodeInspection
-  ['javascript', 'jsx'].forEach(function (langId) {
+  ['javascript', 'jsx', 'typescript', 'tsx'].forEach(function (langId) {
     CodeInspection.register(langId, {
       name: LINTER_NAME,
       scanFile: handleLintSync,
