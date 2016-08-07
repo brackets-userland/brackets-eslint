@@ -100,6 +100,7 @@ define(function () {
     cm.eslintGutters.forEach(function (obj) {
       var severity = obj.severity === 2 ? cssErrorClass : cssWarningClass;
       var $marker = $('<div><span>')
+                        .attr('title', obj.message + ' [' + obj.ruleId + ']')
                         .addClass(gutterMarkerName);
       $marker.find('span')
         .addClass(severity)
