@@ -14,6 +14,7 @@
   var nodeVersion = process.versions.node;
   var isOldNode = /^0/.test(nodeVersion);
   var currentProjectRoot = null;
+  var currentProjectRootHasConfig = false;
   var defaultCwd = process.cwd();
   var domainName = EXTENSION_UNIQUE_NAME;
   var domainManager = null;
@@ -83,6 +84,10 @@
     if (projectRoot) {
       // this is critical for correct .eslintrc resolution
       opts.cwd = projectRoot;
+
+      currentProjectRootHasConfig = fs.readdirSync(projectRoot).some(function (file) {
+        return /^\.eslintrc($|\.[a-z]+$)/i.test(file);
+      });
 
       eslintPath = projectRoot + 'node_modules/eslint';
       try {
