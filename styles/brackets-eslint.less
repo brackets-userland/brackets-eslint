@@ -13,9 +13,10 @@
 }
 
 .brackets-eslint-gutter-marker {
-  cursor: pointer;
-  line-height: @icon-size;
+  cursor: default;
   display: inline-flex;
+  line-height: @icon-size;
+  pointer-events: auto;
 
   .eslint-warning {
     .icon(@icon-size, @warning-color, @warning-icon-url);
