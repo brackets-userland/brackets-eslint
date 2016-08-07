@@ -152,6 +152,9 @@
       _setProjectRoot(projectRoot, currentProjectRoot);
       currentProjectRoot = projectRoot;
     }
+    if (/(\.ts|\.tsx)$/.test(fullPath) && !currentProjectRootHasConfig) {
+      return callback(null, 'typescript-no-config');
+    }
     fs.readFile(fullPath, { encoding: 'utf8' }, function (err, text) {
       if (err) {
         return callback(err);

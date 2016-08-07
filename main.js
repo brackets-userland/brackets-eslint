@@ -80,6 +80,9 @@ define(function (require, exports, module) {
     var projectRoot = ProjectManager.getProjectRoot().fullPath;
     nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report) {
+        if (report === 'typescript-no-config') {
+          deferred.resolve({ errors: [] });
+        }
         if (report.results.length > 1) {
           // console.warn('ESLint returned multiple results, where only one set was expected');
         }
