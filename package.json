@@ -23,9 +23,10 @@
     "url": "https://github.com/zaggino/brackets-eslint.git"
   },
   "scripts": {
+    "dev": "tsc --watch",
+    "test": "tsc && tslint -c tslint.json --project tsconfig.json",
     "postinstall": "typings install",
-    "prepublish": "tsc",
-    "dev": "tsc --watch"
+    "prepublish": "tsc"
   },
   "dependencies": {
     "enable-global-packages": "latest",
