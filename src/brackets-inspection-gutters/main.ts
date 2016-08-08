@@ -41,20 +41,22 @@ define(function (require, exports, module) {
 
   function removeGutter(editor) {
     const cm = editor._codeMirror;
-    if (!cm) {
-      return;
-    }
+    if (!cm) { return; }
 
     const gutters = cm.getOption('gutters').slice(0);
     const io = gutters.indexOf(GUTTER_NAME);
-
     if (io !== -1) {
       gutters.splice(io, 1);
       cm.clearGutter(GUTTER_NAME);
       cm.setOption('gutters', gutters);
     }
 
-    delete cm.eslintGutters;
+    try {
+      const fullPath = editor.document.file.fullPath;
+      delete markers[fullPath];
+    } catch (err) {
+      console.error(`Error clearing data from markers -> ${err}`);
+    }
   }
 
   function prepareGutters(editors) {
