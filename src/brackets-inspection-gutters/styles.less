@@ -8,21 +8,21 @@
 @warning-icon-url: 'images/warning-mask.png';
 @error-icon-url: 'images/error-mask.png';
 
-.CodeMirror .brackets-eslint-gutter {
+.CodeMirror .brackets-inspection-gutter {
   width: 1em;
 }
 
-.brackets-eslint-gutter-marker {
+.brackets-inspection-gutter-marker {
   cursor: default;
   display: inline-flex;
   line-height: @icon-size;
   pointer-events: auto;
 
-  .eslint-warning {
+  .brackets-inspection-gutter-warning {
     .icon(@icon-size, @warning-color, @warning-icon-url);
   }
 
-  .eslint-error {
+  .brackets-inspection-gutter-error {
     .icon(@icon-size, @error-color, @error-icon-url);
   }
 }

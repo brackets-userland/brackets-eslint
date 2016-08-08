@@ -41,6 +41,6 @@ or only disable warnings icons:
 
 ```JSON
 {
-  "brackets-eslint.gutterMarks": { "warning" : false}
+  "brackets-eslint.gutterMarks": { "error": true, "warning" : false }
 }
 ```
