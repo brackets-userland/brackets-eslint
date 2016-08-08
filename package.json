@@ -1,6 +1,6 @@
 {
   "name": "brackets-eslint",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "title": "ESLint",
   "description": "Adds ESLint support to Brackets",
   "keywords": [
@@ -29,6 +29,7 @@
     "prepublish": "tsc"
   },
   "dependencies": {
+    "brackets-inspection-gutters": "^0.2.0",
     "enable-global-packages": "latest",
     "eslint": "<3.0.0"
   },

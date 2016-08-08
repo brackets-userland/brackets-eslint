@@ -1,4 +1,4 @@
-import { CodeInspectionReport, CodeInspectionResult } from '../brackets-inspection-gutters/main.d.ts';
+import { CodeInspectionReport, CodeInspectionResult } from '../../node_modules/brackets-inspection-gutters/src/main.d.ts';
 import { ESLintOptions } from './eslint.d.ts';
 
 const PackageJson = require('../../package.json');

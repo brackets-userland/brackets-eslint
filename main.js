@@ -1,4 +1,4 @@
 define(function (require, exports, module) {
-  require('./dist/brackets-inspection-gutters/main')();
+  require('./node_modules/brackets-inspection-gutters/dist/main')();
   require('./dist/main');
 });

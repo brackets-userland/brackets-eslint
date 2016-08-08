@@ -1,4 +1,4 @@
-import { CodeInspectionReport } from './brackets-inspection-gutters/main.d.ts';
+import { CodeInspectionReport } from '../node_modules/brackets-inspection-gutters/src/main.d.ts';
 
 define(function (require, exports, module) {
 
@@ -40,9 +40,14 @@ define(function (require, exports, module) {
     nodeDomain.exec('lintFile', fullPath, projectRoot)
       .then(function (report: CodeInspectionReport) {
         // set gutter marks using brackets-inspection-gutters module
-        (<any> window).bracketsInspectionGutters.set(
-          EXTENSION_UNIQUE_NAME, fullPath, report, preferences.get('gutterMarks', projectRoot)
-        );
+        const w = (<any> window);
+        if (w.bracketsInspectionGutters) {
+          w.bracketsInspectionGutters.set(
+            EXTENSION_UNIQUE_NAME, fullPath, report, preferences.get('gutterMarks', projectRoot)
+          );
+        } else {
+          log.error(`No bracketsInspectionGutters found on window, gutters disabled.`);
+        }
         deferred.resolve(report);
       }, function (err) {
         deferred.reject(err);
