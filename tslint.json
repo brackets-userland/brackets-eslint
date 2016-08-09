@@ -3,6 +3,7 @@
   "rules": {
     "interface-name": false,
     "member-access": false,
+    "no-console": false,
     "no-var-requires": false,
     "object-literal-sort-keys": false,
     "quotemark": [true, "single"],

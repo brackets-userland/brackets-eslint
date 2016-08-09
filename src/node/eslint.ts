@@ -21,9 +21,11 @@ let currentVersion;
 let currentProjectRoot = null;
 let currentProjectRootHasConfig = false;
 
-function logError(err) {
-  console.error('[' + EXTENSION_NAME + '] ' + err);
-}
+const log = {
+  info: (...args) => console.log('[' + EXTENSION_NAME + ']', ...args),
+  warn: (...args) => console.warn('[' + EXTENSION_NAME + ']', ...args),
+  error: (...args) => console.error('[' + EXTENSION_NAME + ']', ...args)
+};
 
 function getCli(eslintPath, opts) {
   // log version to console to check if we're using the correct eslint
@@ -45,14 +47,14 @@ export function refreshEslintCli(eslintPath?, opts?) {
       const notSupportedVersion = currentVersion;
       eslintPath = path.resolve(__dirname, 'node_modules', 'eslint');
       currentVersion = getEslintVersion(eslintPath);
-      logError(
+      log.error(
         'Detected eslint version 3.x (' + notSupportedVersion +
         '), falling back to default eslint ' + currentVersion
       );
     }
     cli = getCli(eslintPath, opts);
   } catch (err) {
-    logError(err);
+    log.error(err);
   }
 }
 
@@ -86,9 +88,14 @@ export function setProjectRoot(projectRoot?, prevProjectRoot?) {
     // this is critical for correct .eslintrc resolution
     opts.cwd = projectRoot;
 
-    currentProjectRootHasConfig = fs.readdirSync(projectRoot).some(function (file) {
-      return /^\.eslintrc($|\.[a-z]+$)/i.test(file);
-    });
+    try {
+      currentProjectRootHasConfig = fs.readdirSync(projectRoot).some(function (file) {
+        return /^\.eslintrc($|\.[a-z]+$)/i.test(file);
+      });
+    } catch (err) {
+      log.warn(`Failed to read contents of ${projectRoot}: ${err}`);
+      currentProjectRootHasConfig = false;
+    }
 
     eslintPath = projectRoot + 'node_modules/eslint';
     try {
@@ -200,7 +207,7 @@ export function lintFile(
   }
   fs.readFile(fullPath, { encoding: 'utf8' }, function (err: Error, text: string) {
     if (err) {
-      return callback(err);
+      return callback(new Error(`Failed to read contents of ${fullPath}: ${err}`));
     }
     const relativePath = fullPath.indexOf(projectRoot) === 0 ? fullPath.substring(projectRoot.length) : fullPath;
     let res;
