@@ -41,8 +41,9 @@ exports.init = function (_domainManager) {
     true,
     'Fixes the current file using the ESLint auto-fixing feature',
     [
-      { name: 'code', type: 'string' },
-      { name: 'fullPath', type: 'string' }
+      { name: 'projectRoot', type: 'string' },
+      { name: 'fullPath', type: 'string' },
+      { name: 'code', type: 'string' }
     ]
   );
 

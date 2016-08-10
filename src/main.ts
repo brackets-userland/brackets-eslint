@@ -71,7 +71,8 @@ define(function (require, exports, module) {
       return;
     }
 
-    nodeDomain.exec('fixFile', doc.getText(), fullPath)
+    const projectRoot = ProjectManager.getProjectRoot().fullPath;
+    nodeDomain.exec('fixFile', projectRoot, fullPath, doc.getText())
       .then(function (response) {
         const text = response && response.results[0] ? response.results[0].output : '';
         if (text) {

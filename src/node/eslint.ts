@@ -216,21 +216,26 @@ export function lintFile(
       res = cli.executeOnText(text, relativePath);
       res.eslintVersion = currentVersion;
     } catch (e) {
+      log.error(e.stack);
       err = e.toString();
     }
     return callback(err, createCodeInspectionReport(res));
   });
 }
 
-export function fixFile(code, fullPath, callback) {
+export function fixFile(projectRoot, fullPath, code, callback) {
   let res;
   let err;
+  cli.options.fix = true;
   try {
-    cli.options.fix = true;
+    process.chdir(projectRoot);
     res = cli.executeOnText(code, fullPath);
+    res.eslintVersion = currentVersion;
   } catch (e) {
-    err = e;
+    log.error(e.stack);
+    err = e.toString();
+  } finally {
+    cli.options.fix = false;
   }
-  cli.options.fix = false;
   callback(err, res);
 }
