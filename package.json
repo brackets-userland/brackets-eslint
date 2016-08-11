@@ -1,6 +1,6 @@
 {
   "name": "brackets-eslint",
-  "version": "2.9.4",
+  "version": "2.9.5",
   "title": "ESLint",
   "description": "Adds ESLint support to Brackets",
   "keywords": [
@@ -24,9 +24,8 @@
   },
   "scripts": {
     "dev": "tsc --watch",
-    "test": "tsc && tslint -c tslint.json --project tsconfig.json",
-    "postinstall": "typings install",
-    "prepublish": "tsc"
+    "test": "typings install && tsc && tslint -c tslint.json --project tsconfig.json",
+    "prepublish": "typings install && rimraf dist && tsc"
   },
   "dependencies": {
     "brackets-inspection-gutters": "^0.2.0",
