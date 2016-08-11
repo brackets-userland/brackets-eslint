@@ -219,7 +219,7 @@ export function lintFile(
       log.error(e.stack);
       err = e.toString();
     }
-    return callback(err, createCodeInspectionReport(res));
+    return callback(err, res ? createCodeInspectionReport(res) : null);
   });
 }
 
