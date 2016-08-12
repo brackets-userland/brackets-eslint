@@ -45,7 +45,7 @@ export function refreshEslintCli(eslintPath?, opts?) {
     // brackets can't work with 3.x right now
     if (isOldNode && /^3/.test(currentVersion)) {
       const notSupportedVersion = currentVersion;
-      eslintPath = path.resolve(__dirname, 'node_modules', 'eslint');
+      eslintPath = path.resolve(__dirname, '..', '..', 'node_modules', 'eslint');
       currentVersion = getEslintVersion(eslintPath);
       log.error(
         'Detected eslint version 3.x (' + notSupportedVersion +
