@@ -1,6 +1,4 @@
-import {
-  CodeInspectionReport, CodeInspectionResult
-} from '../../node_modules/brackets-inspection-gutters/src/main';
+import { CodeInspectionReport, CodeInspectionResult } from '../types';
 
 export interface ESLintOptions {
   cwd?: string;
