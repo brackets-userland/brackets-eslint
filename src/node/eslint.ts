@@ -224,7 +224,8 @@ export function lintFile(
       res = cli.executeOnText(text, relativePath);
       res.eslintVersion = currentVersion;
     } catch (e) {
-      err = e.stack ? e.stack : e.toString();
+      log.error(e.stack);
+      err = e.toString();
     }
     return callback(err, res ? createCodeInspectionReport(res) : null);
   });
@@ -239,7 +240,8 @@ export function fixFile(projectRoot, fullPath, code, callback) {
     res = cli.executeOnText(code, fullPath);
     res.eslintVersion = currentVersion;
   } catch (e) {
-    err = e.stack ? e.stack : e.toString();
+    log.error(e.stack);
+    err = e.toString();
   } finally {
     cli.options.fix = false;
   }
