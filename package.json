@@ -23,9 +23,10 @@
     "url": "https://github.com/zaggino/brackets-eslint.git"
   },
   "scripts": {
+    "build": "rimraf dist && tsc",
     "dev": "tsc --watch",
-    "test": "typings install && tsc && tslint -c tslint.json --project tsconfig.json",
-    "prepublish": "typings install && rimraf dist && tsc"
+    "test": "tsc && tslint -c tslint.json --project tsconfig.json",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "brackets-inspection-gutters": "^0.2.7",
@@ -33,10 +34,11 @@
     "eslint": "<3.0.0"
   },
   "devDependencies": {
-    "rimraf": "^2.5.4",
-    "tslint": "^3.14.0",
-    "typescript": "^2.0.0",
-    "typings": "^1.3.2"
+    "@types/jquery": "1.10.31",
+    "@types/node": "6.0.38",
+    "rimraf": "2.5.4",
+    "tslint": "3.14.0",
+    "typescript": "2.0.2"
   },
   "engines": {
     "brackets": ">=1.2.0"

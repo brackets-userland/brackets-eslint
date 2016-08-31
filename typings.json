@@ -1,8 +1,0 @@
-{
-  "name": "brackets-eslint",
-  "dependencies": {},
-  "globalDependencies": {
-    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
-    "node": "registry:dt/node#6.0.0+20160805072842"
-  }
-}
