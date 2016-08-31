@@ -75,8 +75,11 @@ function normalizeDir(dirPath) {
   if (dirPath.match(/(\\|\/)$/)) {
     dirPath = dirPath.slice(0, -1);
   }
-  const dir = process.platform === 'win32' ? dirPath.replace(/\//g, '\\') : dirPath;
-  return path.resolve(dir, 'node_modules');
+  return process.platform === 'win32' ? dirPath.replace(/\//g, '\\') : dirPath;
+}
+
+function nodeModulesInDir(dirPath) {
+  return path.resolve(normalizeDir(dirPath), 'node_modules');
 }
 
 export function setProjectRoot(projectRoot?, prevProjectRoot?) {
@@ -135,22 +138,23 @@ export function setProjectRoot(projectRoot?, prevProjectRoot?) {
   // make sure plugins are loadable from current project directory
   let nodePaths = process.env.NODE_PATH ? process.env.NODE_PATH.split(path.delimiter) : [];
   let io;
+
+  // remove previous from NODE_PATH
   if (prevProjectRoot) {
-    // remove from NODE_PATH
-    prevProjectRoot = normalizeDir(prevProjectRoot);
-    io = nodePaths.indexOf(prevProjectRoot);
+    io = nodePaths.indexOf(nodeModulesInDir(prevProjectRoot));
     if (io !== -1) {
       nodePaths.splice(io, 1);
     }
   }
+
+  // add current to NODE_PATH
   if (projectRoot) {
-    // add to NODE_PATH
-    projectRoot = normalizeDir(projectRoot);
-    nodePaths = [projectRoot].concat(nodePaths);
-    process.chdir(projectRoot);
+    nodePaths = [nodeModulesInDir(projectRoot)].concat(nodePaths);
+    process.chdir(normalizeDir(projectRoot));
   } else {
     process.chdir(defaultCwd);
   }
+
   nodePaths = uniq(nodePaths);
   process.env.NODE_PATH = nodePaths.join(path.delimiter);
   require('module').Module._initPaths();
