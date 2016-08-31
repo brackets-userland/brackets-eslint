@@ -1,7 +1,13 @@
 import {
   CodeInspectionReport, CodeInspectionResult
-} from '../../node_modules/brackets-inspection-gutters/src/main.d.ts';
-import { ESLintOptions } from './eslint.d.ts';
+} from '../../node_modules/brackets-inspection-gutters/src/main';
+
+export interface ESLintOptions {
+  cwd?: string;
+  rulePaths?: Array<string>;
+  ignore?: boolean;
+  ignorePath?: string;
+}
 
 const PackageJson = require('../../package.json');
 const EXTENSION_NAME = PackageJson.name;
@@ -59,7 +65,7 @@ export function refreshEslintCli(eslintPath?, opts?) {
 }
 
 function uniq(arr) {
-  return arr.reduce(function (result, item) {
+  return arr.reduce((result, item) => {
     if (result.indexOf(item) === -1) {
       result.push(item);
     }
@@ -89,7 +95,7 @@ export function setProjectRoot(projectRoot?, prevProjectRoot?) {
     opts.cwd = projectRoot;
 
     try {
-      currentProjectRootHasConfig = fs.readdirSync(projectRoot).some(function (file) {
+      currentProjectRootHasConfig = fs.readdirSync(projectRoot).some((file) => {
         return /^\.eslintrc($|\.[a-z]+$)/i.test(file);
       });
     } catch (err) {
@@ -205,7 +211,7 @@ export function lintFile(
   if (/(\.ts|\.tsx)$/.test(fullPath) && !currentProjectRootHasConfig) {
     return callback(null, { errors: [] });
   }
-  fs.readFile(fullPath, { encoding: 'utf8' }, function (err: Error, text: string) {
+  fs.readFile(fullPath, { encoding: 'utf8' }, (err: Error, text: string) => {
     if (err) {
       return callback(new Error(`Failed to read contents of ${fullPath}: ${err}`));
     }
@@ -216,8 +222,7 @@ export function lintFile(
       res = cli.executeOnText(text, relativePath);
       res.eslintVersion = currentVersion;
     } catch (e) {
-      log.error(e.stack);
-      err = e.toString();
+      err = e.stack ? e.stack : e.toString();
     }
     return callback(err, res ? createCodeInspectionReport(res) : null);
   });
@@ -232,8 +237,7 @@ export function fixFile(projectRoot, fullPath, code, callback) {
     res = cli.executeOnText(code, fullPath);
     res.eslintVersion = currentVersion;
   } catch (e) {
-    log.error(e.stack);
-    err = e.toString();
+    err = e.stack ? e.stack : e.toString();
   } finally {
     cli.options.fix = false;
   }

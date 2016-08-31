@@ -28,7 +28,7 @@
     "prepublish": "typings install && rimraf dist && tsc"
   },
   "dependencies": {
-    "brackets-inspection-gutters": "^0.2.0",
+    "brackets-inspection-gutters": "^0.2.7",
     "enable-global-packages": "latest",
     "eslint": "<3.0.0"
   },

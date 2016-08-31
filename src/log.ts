@@ -1,4 +1,4 @@
-define(function (require, exports, module) {
+define((require, exports, module) => {
   'use strict';
 
   const PackageJson = JSON.parse(require('text!../package.json'));
@@ -8,11 +8,11 @@ define(function (require, exports, module) {
     return console[level].apply(console, ['[' + EXTENSION_NAME + ']'].concat(msgs));
   }
 
-  exports.info = function (...msgs) {
+  exports.info = (...msgs) => {
     return log('log', msgs);
   };
 
-  exports.error = function (...msgs) {
+  exports.error = (...msgs) => {
     return log('error', msgs);
   };
 

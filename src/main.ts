@@ -1,8 +1,8 @@
 import {
   CodeInspectionReport
-} from '../node_modules/brackets-inspection-gutters/src/main.d.ts';
+} from '../node_modules/brackets-inspection-gutters/src/main';
 
-define(function (require, exports, module) {
+define((require, exports, module) => {
 
   // imports
   const CodeInspection = brackets.getModule('language/CodeInspection');
@@ -40,7 +40,7 @@ define(function (require, exports, module) {
     const deferred = $.Deferred();
     const projectRoot = ProjectManager.getProjectRoot().fullPath;
     nodeDomain.exec('lintFile', fullPath, projectRoot)
-      .then(function (report: CodeInspectionReport) {
+      .then((report: CodeInspectionReport) => {
         // set gutter marks using brackets-inspection-gutters module
         const w = (<any> window);
         if (w.bracketsInspectionGutters) {
@@ -51,7 +51,7 @@ define(function (require, exports, module) {
           log.error(`No bracketsInspectionGutters found on window, gutters disabled.`);
         }
         deferred.resolve(report);
-      }, function (err) {
+      }, (err) => {
         deferred.reject(err);
       });
     return deferred.promise();
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
 
     const projectRoot = ProjectManager.getProjectRoot().fullPath;
     nodeDomain.exec('fixFile', projectRoot, fullPath, doc.getText())
-      .then(function (response) {
+      .then((response) => {
         const text = response && response.results[0] ? response.results[0].output : '';
         if (text) {
           doc.setText(text);
@@ -82,7 +82,7 @@ define(function (require, exports, module) {
         // Reset editor back to previous cursor position
         editor.setCursorPos(cursor);
         editor.setScrollPos(scroll.x, scroll.y);
-      }, function (err) {
+      }, (err) => {
         log.error(`fixFile -> error: ${err}`);
       });
   }
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
   contextMenu.addMenuItem(AUTOFIX_COMMAND_ID);
 
   // register a linter with CodeInspection
-  ['javascript', 'jsx', 'typescript', 'tsx'].forEach(function (langId) {
+  ['javascript', 'jsx', 'typescript', 'tsx'].forEach((langId) => {
     CodeInspection.register(langId, {
       name: LINTER_NAME,
       scanFile: handleLintSync,
