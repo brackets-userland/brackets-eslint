@@ -207,8 +207,12 @@ export function lintFile(
   fullPath: string, projectRoot: string, callback: (err?: Error, res?: CodeInspectionReport) => void
 ) {
   if (projectRoot !== currentProjectRoot) {
-    setProjectRoot(projectRoot, currentProjectRoot);
-    currentProjectRoot = projectRoot;
+    try {
+      setProjectRoot(projectRoot, currentProjectRoot);
+      currentProjectRoot = projectRoot;
+    } catch (err) {
+      log.error(`Error thrown in setProjectRoot: ${err.stack}`);
+    }
   }
   if (/(\.ts|\.tsx)$/.test(fullPath) && !currentProjectRootHasConfig) {
     return callback(null, { errors: [] });
@@ -220,11 +224,10 @@ export function lintFile(
     const relativePath = fullPath.indexOf(projectRoot) === 0 ? fullPath.substring(projectRoot.length) : fullPath;
     let res;
     try {
-      process.chdir(projectRoot);
       res = cli.executeOnText(text, relativePath);
       res.eslintVersion = currentVersion;
     } catch (e) {
-      log.error(e.stack);
+      log.error(`Error thrown in executeOnText: ${e.stack}`);
       err = e.toString();
     }
     return callback(err, res ? createCodeInspectionReport(res) : null);
