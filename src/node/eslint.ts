@@ -241,6 +241,15 @@ export function lintFile(
   if (/(\.ts|\.tsx)$/.test(fullPath) && !currentProjectRootHasConfig) {
     return callback(null, { errors: [] });
   }
+  if (cli == null) {
+    return callback(null, {
+      errors: [{
+        type: 'problem_type_error',
+        message: `ESLintError: No ESLint cli is available, try reinstalling the extension`,
+        pos: { line: 0, ch: 0 }
+      }]
+    });
+  }
   fs.readFile(fullPath, { encoding: 'utf8' }, (err: Error, text: string) => {
     if (err) {
       return callback(new Error(`Failed to read contents of ${fullPath}: ${err}`));
