@@ -198,8 +198,10 @@ function mapEslintMessage(result, version): CodeInspectionResult {
 function createCodeInspectionReport(eslintReport): CodeInspectionReport {
   // if version is missing, assume 1
   const version = eslintReport.eslintVersion ? eslintReport.eslintVersion.split('.')[0] : 1;
+  const results = eslintReport.results ? eslintReport.results[0] : null;
+  const messages = results ? results.messages : [];
   return {
-    errors: eslintReport.results[0].messages.map(x => mapEslintMessage(x, version))
+    errors: messages.map(x => mapEslintMessage(x, version))
   };
 }
 
