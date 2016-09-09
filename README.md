@@ -13,7 +13,9 @@ Use [brackets-npm-registry](https://github.com/zaggino/brackets-npm-registry)
 
 ## How to configure
 
-Use standard `.eslintrc` file like [this one](.eslintrc.js)
+Use standard `.eslintrc` file like [this one](https://github.com/adobe/brackets/blob/master/.eslintrc.json)
+
+[Configuring ESLint](http://eslint.org/docs/user-guide/configuring)
 
 [More information here](https://github.com/zaggino/brackets-eslint/issues/46)
 
