@@ -6,6 +6,7 @@
     "no-console": false,
     "no-var-requires": false,
     "object-literal-sort-keys": false,
+    "ordered-imports": false,
     "quotemark": [true, "single"],
     "trailing-comma": [true, "never"],
     "variable-name": false
