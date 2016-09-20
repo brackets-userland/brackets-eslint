@@ -5,6 +5,7 @@ export interface ESLintOptions {
   rulePaths?: Array<string>;
   ignore?: boolean;
   ignorePath?: string;
+  baseConfig?: Object;
 }
 
 const PackageJson = require('../../package.json');
@@ -124,6 +125,10 @@ export function setProjectRoot(projectRoot?, prevProjectRoot?) {
     } catch (err) {
       log.warn(`Failed to read contents of ${projectRoot}: ${err}`);
       currentProjectRootHasConfig = false;
+    }
+
+    if (!currentProjectRootHasConfig) {
+      opts.baseConfig = { extends: 'eslint:recommended' };
     }
 
     eslintPath = projectRoot + 'node_modules/eslint';
