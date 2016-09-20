@@ -277,7 +277,15 @@ export function lintFile(
     return callback(null, { errors: [] });
   }
   if (cli == null) {
-    return callback(null, createUserError(`ESLintError: No ESLint cli is available, try reinstalling the extension`));
+    if (currentProjectRootHasConfig) {
+      return callback(null, createUserError(
+        `ESLintError: You need to install ESLint in your project folder with 'npm install eslint'`
+      ));
+    } else {
+      return callback(null, createUserError(
+        `ESLintError: No ESLint cli is available, try reinstalling the extension`
+      ));
+    }
   }
   const relativePath = fullPath.indexOf(projectRoot) === 0 ? fullPath.substring(projectRoot.length) : fullPath;
   let res: any;
