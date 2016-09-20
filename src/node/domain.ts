@@ -5,11 +5,9 @@ const EXTENSION_NAME = PackageJson.name;
 const EXTENSION_UNIQUE_NAME = 'zaggino.' + EXTENSION_NAME;
 const domainName = EXTENSION_UNIQUE_NAME;
 
-let domainManager = null;
+let domainManager: any;
 
-esLint.refreshEslintCli();
-
-exports.init = (_domainManager) => {
+exports.init = (_domainManager: any) => {
   domainManager = _domainManager;
 
   if (!domainManager.hasDomain(domainName)) {
@@ -23,8 +21,9 @@ exports.init = (_domainManager) => {
     true, // is async
     'lint given file with eslint', // description
     [
+      { name: 'projectRoot', type: 'string' },
       { name: 'fullPath', type: 'string' },
-      { name: 'projectRoot', type: 'string' }
+      { name: 'text', type: 'string' },
     ], [
       { name: 'report', type: 'object' }
     ]
@@ -39,7 +38,7 @@ exports.init = (_domainManager) => {
     [
       { name: 'projectRoot', type: 'string' },
       { name: 'fullPath', type: 'string' },
-      { name: 'code', type: 'string' }
+      { name: 'text', type: 'string' }
     ]
   );
 

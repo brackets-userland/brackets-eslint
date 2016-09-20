@@ -37,7 +37,7 @@ define((require, exports, module) => {
   function handleLintAsync(text: string, fullPath: string): JQueryPromise<CodeInspectionReport> {
     const deferred = $.Deferred();
     const projectRoot = ProjectManager.getProjectRoot().fullPath;
-    nodeDomain.exec('lintFile', fullPath, projectRoot)
+    nodeDomain.exec('lintFile', projectRoot, fullPath, text)
       .then((report: CodeInspectionReport) => {
         // set gutter marks using brackets-inspection-gutters module
         const w = (<any> window);
