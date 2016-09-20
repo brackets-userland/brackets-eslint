@@ -1,6 +1,6 @@
 {
   "name": "brackets-eslint",
-  "version": "2.9.10",
+  "version": "3.0.0",
   "title": "ESLint",
   "description": "Adds ESLint support to Brackets",
   "keywords": [
@@ -40,6 +40,6 @@
     "typescript": "2.0.2"
   },
   "engines": {
-    "brackets": ">=1.2.0"
+    "brackets": ">=1.8.0"
   }
 }
