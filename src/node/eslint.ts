@@ -38,6 +38,7 @@ let cli: ESLintCLIEngine | null = null;
 let currentVersion: string | null = null;
 let currentProjectRoot: string | null = null;
 let currentProjectRootHasConfig: boolean = false;
+let erroredLastTime: boolean = true;
 
 const log = {
   info: (...args: any[]) => console.log('[' + EXTENSION_NAME + ']', ...args),
@@ -248,6 +249,7 @@ function createCodeInspectionReport(eslintReport: any): CodeInspectionReport {
 }
 
 function createUserError(message: string): CodeInspectionReport {
+  erroredLastTime = true;
   return {
     errors: [{
       type: 'problem_type_error',
@@ -265,10 +267,11 @@ export function lintFile(
       `ESLintError: Legacy node process detected, please update to Brackets 1.8 or Brackets-Electron`
     ));
   }
-  if (projectRoot !== currentProjectRoot) {
+  if (erroredLastTime || projectRoot !== currentProjectRoot) {
     try {
       setProjectRoot(projectRoot, currentProjectRoot);
       currentProjectRoot = projectRoot;
+      erroredLastTime = false;
     } catch (err) {
       log.error(`Error thrown in setProjectRoot: ${err.stack}`);
     }
@@ -296,6 +299,7 @@ export function lintFile(
   } catch (e) {
     log.error(`Error thrown in executeOnText: ${e.stack}`);
     err = e;
+    erroredLastTime = true;
   }
   return callback(err, res ? createCodeInspectionReport(res) : void 0);
 }
