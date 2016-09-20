@@ -47,14 +47,9 @@ const log = {
 };
 
 function getCli(eslintPath: string, opts: ESLintOptions): ESLintCLIEngine | null {
-  // log version to console to check if we're using the correct eslint
-  // const pkgVersion = require(eslintPath + '/package.json').version;
-  // console.log('using ESLint version', pkgVersion, 'from:', eslintPath);
-  const _eslintPath = eslintPath || 'eslint';
-
   let _realPath: string;
   try {
-    _realPath = require.resolve(_eslintPath);
+    _realPath = require.resolve(eslintPath);
   } catch (err) {
     log.error(`Wasn't able to resolve path to eslint: ${err.stack}`);
     return null;
@@ -62,7 +57,7 @@ function getCli(eslintPath: string, opts: ESLintOptions): ESLintCLIEngine | null
 
   let _eslint: ESLint;
   try {
-    _eslint = require(_eslintPath);
+    _eslint = require(eslintPath);
   } catch (err) {
     log.error(`Wasn't able to load eslint from ${_realPath}, be sure to run 'npm install' properly: ${err.stack}`);
     return null;
