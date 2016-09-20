@@ -257,9 +257,10 @@ function createUserError(message: string): CodeInspectionReport {
 export function lintFile(
   projectRoot: string, fullPath: string, text: string, callback: (err: Error | null, res?: CodeInspectionReport) => void
 ) {
-  if (isOldNode && (!currentVersion || /^3/.test(currentVersion))) {
+  if (isOldNode && currentVersion && /^3/.test(currentVersion)) {
     return callback(null, createUserError(
-      `ESLintError: Legacy node process detected, please update to Brackets 1.8 or Brackets-Electron`
+      `ESLintError: Legacy node process detected (${nodeVersion}), ` +
+      `please update to Brackets 1.8 or Brackets-Electron to support ESLint ${currentVersion}`
     ));
   }
   if (erroredLastTime || projectRoot !== currentProjectRoot) {
