@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "brackets-inspection-gutters": "^0.2.7",
-    "enable-global-packages": "latest",
     "eslint": "^3.5.0"
   },
   "devDependencies": {

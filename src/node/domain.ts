@@ -9,10 +9,6 @@ let domainManager = null;
 
 esLint.refreshEslintCli();
 
-require('enable-global-packages').on('ready', () => {
-  esLint.setProjectRoot();
-});
-
 exports.init = (_domainManager) => {
   domainManager = _domainManager;
 
