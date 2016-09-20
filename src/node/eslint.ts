@@ -236,6 +236,16 @@ function createCodeInspectionReport(eslintReport): CodeInspectionReport {
   };
 }
 
+function createUserError(message: string): CodeInspectionReport {
+  return {
+    errors: [{
+      type: 'problem_type_error',
+      message,
+      pos: { line: 0, ch: 0 }
+    }]
+  };
+}
+
 export function lintFile(
   fullPath: string, projectRoot: string, callback: (err?: Error, res?: CodeInspectionReport) => void
 ) {
@@ -251,13 +261,7 @@ export function lintFile(
     return callback(null, { errors: [] });
   }
   if (cli == null) {
-    return callback(null, {
-      errors: [{
-        type: 'problem_type_error',
-        message: `ESLintError: No ESLint cli is available, try reinstalling the extension`,
-        pos: { line: 0, ch: 0 }
-      }]
-    });
+    return callback(null, createUserError(`ESLintError: No ESLint cli is available, try reinstalling the extension`));
   }
   fs.readFile(fullPath, { encoding: 'utf8' }, (err: Error, text: string) => {
     if (err) {
