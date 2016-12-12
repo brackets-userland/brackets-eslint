@@ -8,7 +8,7 @@ export interface ESLint {
 
 export interface ESLintOptions {
   cwd?: string;
-  rulePaths?: Array<string>;
+  rulePaths?: string[];
   ignore?: boolean;
   ignorePath?: string;
   baseConfig?: Object;
