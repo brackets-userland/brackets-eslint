@@ -23,10 +23,11 @@
     "url": "https://github.com/zaggino/brackets-eslint.git"
   },
   "scripts": {
-    "build": "rimraf dist && tsc",
     "dev": "tsc --watch",
-    "test": "tsc && tslint -c tslint.json --project tsconfig.json",
-    "prepublish": "npm run build"
+    "test": "npm run prepublish",
+    "prepublish": "npm prune && npm update && npm run build && npm run lint",
+    "build": "rimraf ./dist && tsc",
+    "lint": "tslint -c tslint.json --project tsconfig.json"
   },
   "dependencies": {
     "brackets-inspection-gutters": "^0.2.8",
