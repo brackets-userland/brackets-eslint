@@ -1,6 +1,9 @@
 {
   "name": "brackets-eslint",
-  "version": "3.0.5",
+  "version": "3.0.6",
+  "engines": {
+    "brackets": ">=1.9.0"
+  },
   "title": "ESLint",
   "description": "Adds ESLint support to Brackets",
   "keywords": [
@@ -30,17 +33,14 @@
     "lint": "tslint -c tslint.json --project tsconfig.json"
   },
   "dependencies": {
-    "brackets-inspection-gutters": "^0.2.9",
-    "eslint": "^3.12.0"
+    "brackets-inspection-gutters": "^0.2.10",
+    "eslint": "^3.16.1"
   },
   "devDependencies": {
-    "@types/jquery": "2.0.34",
-    "@types/node": "6.0.39",
-    "rimraf": "2.5.4",
+    "@types/jquery": "2.0.40",
+    "@types/node": "7.0.5",
+    "rimraf": "2.6.1",
     "tslint": "4.0.2",
     "typescript": "2.1.4"
-  },
-  "engines": {
-    "brackets": ">=1.8.0"
   }
 }
