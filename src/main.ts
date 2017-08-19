@@ -26,6 +26,9 @@ define((require, exports, module) => {
   preferences.definePreference('gutterMarks', 'boolean', true);
   preferences.set('gutterMarks', preferences.get('gutterMarks'));
 
+  preferences.definePreference('useLocalESLint', 'boolean', false);
+  preferences.set('useLocalESLint', preferences.get('useLocalESLint'));
+
   // Constants
   const LINTER_NAME = 'ESLint';
   const nodeDomain = new NodeDomain(EXTENSION_UNIQUE_NAME, ExtensionUtils.getModulePath(module, './node/domain'));
@@ -37,7 +40,8 @@ define((require, exports, module) => {
   function handleLintAsync(text: string, fullPath: string): JQueryPromise<CodeInspectionReport> {
     const deferred = $.Deferred();
     const projectRoot = ProjectManager.getProjectRoot().fullPath;
-    nodeDomain.exec('lintFile', projectRoot, fullPath, text)
+    const useLocalESLint = preferences.get('useLocalESLint');
+    nodeDomain.exec('lintFile', projectRoot, fullPath, text, useLocalESLint)
       .then((report: CodeInspectionReport) => {
         // set gutter marks using brackets-inspection-gutters module
         const w = (<any> window);

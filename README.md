@@ -48,3 +48,11 @@ or only disable warnings icons:
   "brackets-eslint.gutterMarks": { "error": true, "warning" : false }
 }
 ```
+
+To force the extension to use its own local version of ESLint:
+
+```JSON
+{
+  "brackets-eslint.useLocalESLint": true
+}
+```

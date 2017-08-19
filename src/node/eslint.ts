@@ -113,7 +113,7 @@ function nodeModulesInDir(dirPath: string) {
   return path.resolve(normalizeDir(dirPath), 'node_modules');
 }
 
-export function setProjectRoot(projectRoot: string | null, prevProjectRoot: string | null) {
+export function setProjectRoot(projectRoot: string | null, prevProjectRoot: string | null, useLocalESLint: boolean) {
   // refresh when called without arguments
   if (!projectRoot) { projectRoot = currentProjectRoot; }
 
@@ -141,7 +141,8 @@ export function setProjectRoot(projectRoot: string | null, prevProjectRoot: stri
     }
 
     // only allow use of local eslint when no configuration is present in the project
-    allowLocalEslint = !currentProjectRootHasConfig;
+    // or when the useLocalESLint preference is set to true
+    allowLocalEslint = !currentProjectRootHasConfig || useLocalESLint;
 
     eslintPath = projectRoot + 'node_modules/eslint';
     try {
@@ -255,7 +256,8 @@ function createUserError(message: string): CodeInspectionReport {
 }
 
 export function lintFile(
-  projectRoot: string, fullPath: string, text: string, callback: (err: Error | null, res?: CodeInspectionReport) => void
+  projectRoot: string, fullPath: string, text: string, useLocalESLint: boolean,
+  callback: (err: Error | null, res?: CodeInspectionReport) => void
 ) {
   if (isOldNode && currentVersion && /^3/.test(currentVersion)) {
     return callback(null, createUserError(
@@ -265,7 +267,7 @@ export function lintFile(
   }
   if (erroredLastTime || projectRoot !== currentProjectRoot) {
     try {
-      setProjectRoot(projectRoot, currentProjectRoot);
+      setProjectRoot(projectRoot, currentProjectRoot, useLocalESLint);
       currentProjectRoot = projectRoot;
       erroredLastTime = false;
     } catch (err) {
