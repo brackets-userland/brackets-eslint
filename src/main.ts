@@ -12,8 +12,7 @@ define((require, exports, module) => {
   const DocumentManager = brackets.getModule('document/DocumentManager');
   const EditorManager = brackets.getModule('editor/EditorManager');
   const PreferencesManager = brackets.getModule('preferences/PreferencesManager');
-  const PackageJson = JSON.parse(require('text!../package.json'));
-  const EXTENSION_NAME = PackageJson.name;
+  const EXTENSION_NAME = 'brackets-eslint';
   const EXTENSION_UNIQUE_NAME = 'zaggino.' + EXTENSION_NAME;
   const AUTOFIX_COMMAND_ID = EXTENSION_UNIQUE_NAME + '.autofix';
   const AUTOFIX_COMMAND_NAME = 'Auto-fix with ESLint';
@@ -38,7 +37,7 @@ define((require, exports, module) => {
   }
 
   function handleLintAsync(text: string, fullPath: string): JQueryPromise<CodeInspectionReport> {
-    const deferred = $.Deferred();
+    const deferred: JQueryDeferred<CodeInspectionReport> = $.Deferred();
     const projectRoot = ProjectManager.getProjectRoot().fullPath;
     const useLocalESLint = preferences.get('useLocalESLint');
     nodeDomain.exec('lintFile', projectRoot, fullPath, text, useLocalESLint)
