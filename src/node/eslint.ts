@@ -21,8 +21,7 @@ export interface ESLintCLIEngine {
   };
 }
 
-const PackageJson = require('../../package.json');
-const EXTENSION_NAME = PackageJson.name;
+const EXTENSION_NAME = 'brackets-eslint';
 const fs = require('fs');
 const path = require('path');
 const nodeVersion = process.versions.node;

@@ -1,8 +1,7 @@
 define((require, exports, module) => {
   'use strict';
 
-  const PackageJson = JSON.parse(require('text!../package.json'));
-  const EXTENSION_NAME = PackageJson.name;
+  const EXTENSION_NAME = 'brackets-eslint';
 
   function log(level, msgs) {
     return console[level].apply(console, ['[' + EXTENSION_NAME + ']'].concat(msgs));

@@ -1,7 +1,6 @@
 import * as esLint from './eslint';
 
-const PackageJson = require('../../package.json');
-const EXTENSION_NAME = PackageJson.name;
+const EXTENSION_NAME = 'brackets-eslint';
 const EXTENSION_UNIQUE_NAME = 'zaggino.' + EXTENSION_NAME;
 const domainName = EXTENSION_UNIQUE_NAME;
 
