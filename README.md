@@ -56,3 +56,39 @@ To force the extension to use its own local version of ESLint:
   "brackets-eslint.useLocalESLint": true
 }
 ```
+
+## Publishing new version of the extension
+
+clone:
+```
+https://github.com/brackets-userland/brackets-eslint
+cd brackets-eslint
+```
+
+get latest version from origin (discarding local changes):
+```
+git fetch origin
+git reset --hard origin/master
+git status (should say 'nothing to commit, working tree clean')
+```
+
+make sure the extension is built locally:
+```
+npm install
+```
+
+raise the version & publish:
+```
+npm version [major | minor | patch]
+git push
+git push --tags
+npm publish
+```
+
+pack all except `.git` and `node_modules` folders into a zip file and upload to brackets-registry
+one thing here - someone's blocking 'brackets-eslint' name so I rename the name of the extension to:
+```
+"name": "zaggino.brackets-eslint",
+```
+before zipping in package.json, maybe ask registry maintainers to look into this
+after zipping just do `git reset --hard` to revert again
