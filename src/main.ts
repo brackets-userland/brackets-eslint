@@ -103,7 +103,7 @@ define((require, exports, module) => {
   contextMenu.addMenuItem(AUTOFIX_COMMAND_ID);
 
   // register a linter with CodeInspection
-  ['javascript', 'jsx', 'typescript', 'tsx'].forEach((langId) => {
+  ['javascript', 'jsx', 'typescript', 'tsx', 'vue'].forEach((langId) => {
     CodeInspection.register(langId, {
       name: LINTER_NAME,
       scanFile: handleLintSync,
