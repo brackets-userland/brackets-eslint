@@ -1,4 +1,4 @@
-# ESLint [![Build Status](https://travis-ci.org/zaggino/brackets-eslint.svg?branch=master)](https://travis-ci.org/zaggino/brackets-eslint)
+# ESLint [![Build Status](https://travis-ci.org/brackets-userland/brackets-eslint.svg?branch=master)](https://travis-ci.org/brackets-userland/brackets-eslint)
 
 Brackets extension which provides file linting with ESLint.
 
@@ -9,7 +9,7 @@ Includes support for [custom parsers and plugins](#custom-parsers-and-plugins).
 
 ## How to install
 
-Use [brackets-npm-registry](https://github.com/zaggino/brackets-npm-registry)
+Use [brackets-npm-registry](https://github.com/brackets-userland/brackets-npm-registry)
 
 ## How to configure
 
@@ -17,7 +17,7 @@ Use standard `.eslintrc` file like [this one](https://github.com/adobe/brackets/
 
 [Configuring ESLint](http://eslint.org/docs/user-guide/configuring)
 
-[More information here](https://github.com/zaggino/brackets-eslint/issues/46)
+[More information here](https://github.com/brackets-userland/brackets-eslint/issues/46)
 
 ## How to use custom rules
 

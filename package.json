@@ -13,8 +13,8 @@
     "linting",
     "linter"
   ],
-  "homepage": "https://github.com/zaggino/brackets-eslint",
-  "bugs": "https://github.com/zaggino/brackets-eslint/issues",
+  "homepage": "https://github.com/brackets-userland/brackets-eslint",
+  "bugs": "https://github.com/brackets-userland/brackets-eslint/issues",
   "license": "MIT",
   "author": {
     "name": "Martin Zagora",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zaggino/brackets-eslint.git"
+    "url": "https://github.com/brackets-userland/brackets-eslint.git"
   },
   "scripts": {
     "dev": "tsc --watch",
