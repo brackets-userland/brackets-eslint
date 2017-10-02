@@ -1,5 +1,7 @@
 # ESLint [![Build Status](https://travis-ci.org/brackets-userland/brackets-eslint.svg?branch=master)](https://travis-ci.org/brackets-userland/brackets-eslint)
 
+> **Heads up!** Beginning with version 1.11, Brackets now includes a prepackaged version of ESLint. If you want to get the possible benefits of `brackets-eslint` such as quicker release cycle, you might have to uninstall the default extension first via Extension Manager -> Installed -> ESLint.
+
 Brackets extension which provides file linting with ESLint.
 
 Uses CLIEngine from [https://www.npmjs.com/package/eslint](https://www.npmjs.com/package/eslint)
